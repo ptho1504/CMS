@@ -1,0 +1,77 @@
+{
+  "login": {
+    "text": "Login",
+    "email": {
+      "text": "Email",
+      "place_holder": "Enter your email",
+      "validation": {
+        "email_required": "Bạn chưa nhập email",
+        "email_invalid": "Email is not valid"
+      }
+    },
+    "password": {
+      "text": "Password",
+      "place_holder": "Enter your password",
+      "validation": {
+        "password_required": "Bạn chưa nhập mật khẩu",
+        "password_short": "Password more than 3 characters"
+      }
+    },
+    "no_account": "Do not have account ? ",
+    "vn": "Vietnamese",
+    "en": "English"
+  },
+  "signup": {
+    "text": "Sign up",
+    "email": {
+      "text": "Email",
+      "place_holder": "Enter your email"
+    },
+    "password": {
+      "text": "Password",
+      "place_holder": "Enter your password"
+    },
+    "cf-password": {
+      "text": "Confirm Password",
+      "place_holder": "Confirm your password",
+      "validation": {
+        "password_not_equal": "Password not match"
+      }
+    },
+    "have_account": "Have account ? "
+  },
+  "errors": {
+    "404": {
+      "text": "Oops",
+      "description": "We can't find that page !",
+      "return_home": "Return Home"
+    }
+  },
+  "dashboard": {
+    "text": "Dash board",
+    "customer": {
+      "text": "Customers",
+      "create": {
+        "text": "Create Customers"
+      },
+      "manager": {
+        "text": "Manager Customers"
+      }
+    },
+    "contract": {
+      "text": "Contracts",
+      "create": {
+        "text": "Create contract"
+      },
+      "manager": {
+        "text": "Manager contracts"
+      }
+    },
+    "transaction": {
+      "text": "Transaction History",
+      "create": {
+        "text": "Something"
+      }
+    }
+  }
+}

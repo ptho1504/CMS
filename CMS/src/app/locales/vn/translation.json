@@ -1,0 +1,77 @@
+{
+  "login": {
+    "text": "Đăng nhập",
+    "email": {
+      "text": "Email",
+      "place_holder": "Nhập email",
+      "validation": {
+        "email_required": "Bạn chưa nhập email",
+        "email_invalid": "Email không hợp lệ"
+      }
+    },
+    "password": {
+      "text": "Mật khẩu",
+      "place_holder": "Nhập mật khẩu",
+      "validation": {
+        "password_required": "Bạn chưa nhập mật khẩu",
+        "password_short": "Mật khẩu nhỏ hơn 3 kí tự"
+      }
+    },
+    "no_account": "Không có tài khoản ? ",
+    "vn": "Tiếng Việt",
+    "en": "Tiếng Anh"
+  },
+  "signup": {
+    "text": "Đăng ký",
+    "email": {
+      "text": "Email",
+      "place_holder": "Nhập email"
+    },
+    "password": {
+      "text": "Mật khẩu",
+      "place_holder": "Nhập mật khẩu"
+    },
+    "cf-password": {
+      "text": "Xác nhận mật khẩu",
+      "place_holder": "Xác nhận mật khẩu của bạn",
+      "validation": {
+        "password_not_equal": "Mật khẩu không trùng khớp"
+      }
+    },
+    "have_account": "Đã có tài khoản ? "
+  },
+  "errors": {
+    "404": {
+      "text": "Lỗi",
+      "description": "Không thể tìm thấy trang đang tìm kiếm!",
+      "return_home": "Trở về"
+    }
+  },
+  "dashboard": {
+    "text": "Dash board",
+    "customer": {
+      "text": "Khách hàng",
+      "create": {
+        "text": "Tạo mới khách hàng"
+      },
+      "manager": {
+        "text": "Quản lý khách hàng"
+      }
+    },
+    "contract": {
+      "text": "Hợp đồng",
+      "create": {
+        "text": "Tạo hợp đồng"
+      },
+      "manager": {
+        "text": "Quản lý hợp đồng"
+      }
+    },
+    "transaction": {
+      "text": "Lịch sử giao dịch",
+      "create": {
+        "text": "Something"
+      }
+    }
+  }
+}
