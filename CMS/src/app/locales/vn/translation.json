@@ -73,5 +73,72 @@
         "text": "Something"
       }
     }
+  },
+  "customers": {
+    "export": {
+      "text": "Xuất file"
+    },
+    "search": {
+      "text": "Tìm kiếm"
+    },
+    "filter": {
+      "text": "Bộ lọc"
+    },
+    "reset": {
+      "text": "Bỏ chọn"
+    },
+    "close": {
+      "text": "Đóng"
+    },
+    "ok": {
+      "text": "Đồng ý"
+    },
+    "columns": {
+      "id": {
+        "text": "Id",
+        "place_holder": "Tìm kiếm Id"
+      },
+      "gender": {
+        "text": "Giới tính",
+        "value": {
+          "male": "Male",
+          "female": "Female"
+        }
+      },
+      "email": {
+        "text": "Email",
+        "place_holder": "Tìm kiếm Email"
+      },
+      "firstname": {
+        "text": "Họ",
+        "place_holder": "Tìm kiếm họ"
+      },
+      "lastname": {
+        "text": "Tên",
+        "place_holder": "Tìm kiếm tên"
+      },
+      "middlename": {
+        "text": "Tên lót",
+        "place_holder": "Tìm kiếm tên lót"
+      },
+      "birthdate": {
+        "text": "Ngày sinh",
+        "place_holder": "Tìm kiếm ngày sinh"
+      },
+      "birthplace": {
+        "text": "Nơi sinh",
+        "place_holder": "Tìm kiếm nơi sinh"
+      },
+      "citizenship": {
+        "text": "Công dân",
+        "place_holder": "Tìm kiếm công dân"
+      }
+    },
+    "action": {
+      "add": "Thêm",
+      "delete": "Xóa",
+      "update": "Sửa",
+      "view": "Xem"
+    }
   }
 }

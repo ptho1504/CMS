@@ -3,9 +3,12 @@ import { Logout } from "../modules/auth/pages/Logout";
 import PrivateRoutes from "./PrivateRoutes";
 import AuthPage from "../modules/auth/AuthPage";
 import ErrorPage from "../modules/error/ErrorPage";
+import { useAuth } from "../modules/auth";
 const { BASE_URL } = import.meta.env;
 const AppRoute = () => {
   const currentUser = true;
+  // const { currentUser } = useAuth();
+  // console.log(currentUser);
   return (
     <BrowserRouter basename={BASE_URL}>
       <Routes>

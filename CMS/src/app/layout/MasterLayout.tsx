@@ -48,7 +48,10 @@ const MasterLayout = () => {
     ]),
     getItem(`${t("dashboard.contract.text")}`, "sub2", <TeamOutlined />, [
       getItem(`${t("dashboard.contract.manager.text")}`, "/apps/contracts/"),
-      getItem(`${t("dashboard.contract.create.text")}`, "/apps/contracts/create"),
+      getItem(
+        `${t("dashboard.contract.create.text")}`,
+        "/apps/contracts/create"
+      ),
     ]),
     getItem(`${t("dashboard.transaction.text")}`, "9", <HistoryOutlined />),
   ];
@@ -63,7 +66,7 @@ const MasterLayout = () => {
             onCollapse={(value) => setCollapsed(value)}
             width={225}
           >
-            <div className="demo-logo-vertical" />
+            <h4 className="text-3xl text-center text-white font-bold my-2 font-mono">CMS</h4>
             <Menu
               theme="dark"
               defaultSelectedKeys={["1"]}

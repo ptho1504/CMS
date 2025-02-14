@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import enFlag from "@/assets/icons/en.svg";
 import vnFlag from "@/assets/icons/vn.svg";
+import { useNavigate } from "react-router-dom";
 const items = [
   {
     key: "sub1",
@@ -16,7 +17,7 @@ const items = [
         label: "Thông tin",
       },
       {
-        key: "4",
+        key: "/auth/logout",
         label: "Đăng xuất",
       },
     ],
@@ -27,6 +28,7 @@ const HeaderApp = () => {
   const [language, setLanguage] = useState(
     localStorage.getItem(FLAG_LOCAL_STORAGE_KEY) || "vn"
   );
+  const navigate = useNavigate();
 
   const changeLanguage = (lang: string) => {
     setLanguage(lang === "vn" ? "vn" : "en");
@@ -40,10 +42,9 @@ const HeaderApp = () => {
           width: 120,
         }}
         defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
         mode={"vertical"}
-        // theme={theme}
         items={items}
+        onClick={({ key }) => navigate(key)}
       />
       {/* Change Language */}
       <div className="flex items-center justify-center gap-1">

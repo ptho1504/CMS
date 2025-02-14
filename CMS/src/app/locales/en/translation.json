@@ -73,5 +73,72 @@
         "text": "Something"
       }
     }
+  },
+  "customers": {
+    "export": {
+      "text": "Export File"
+    },
+    "search": {
+      "text": "Search"
+    },
+    "filter": {
+      "text": "Filter"
+    },
+    "reset": {
+      "text": "Reset"
+    },
+    "close": {
+      "text": "Close"
+    },
+    "ok": {
+      "text": "Ok"
+    },
+    "columns": {
+      "id": {
+        "text": "Id",
+        "place_holder": "Search Id"
+      },
+      "gender": {
+        "text": "Gender",
+        "value": {
+          "male": "Male",
+          "female": "Female"
+        }
+      },
+      "email": {
+        "text": "Email",
+        "place_holder": "Search Email"
+      },
+      "firstname": {
+        "text": "Firstname",
+        "place_holder": "Search first name"
+      },
+      "lastname": {
+        "text": "Lastname",
+        "place_holder": "Search last name"
+      },
+      "middlename": {
+        "text": "Middle",
+        "place_holder": "Search middle name"
+      },
+      "birthdate": {
+        "text": "Birthdate",
+        "place_holder": "Search birth date"
+      },
+      "birthplace": {
+        "text": "Birthplace",
+        "place_holder": "Search birth place"
+      },
+      "citizenship": {
+        "text": "Citizenship",
+        "place_holder": "Search citizenship"
+      }
+    },
+    "action": {
+      "add": "Add",
+      "delete": "Delete",
+      "update": "Update",
+      "view": "View"
+    }
   }
 }

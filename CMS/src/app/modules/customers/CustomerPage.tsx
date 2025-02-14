@@ -4,7 +4,6 @@ import Customer from "./pages/Customer";
 import AddCustomer from "./pages/AddCustomer";
 
 const CustomerPage = () => {
-  console.log("Customer page");
   return (
     <Routes>
       <Route element={<CustomerWrapper />}>
