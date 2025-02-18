@@ -1,0 +1,47 @@
+services:
+  mysql:
+    container_name: mysql_container
+    image: mysql:8.0.30
+    ports:
+      - ${DATABASE_PORT}:3306
+    environment:
+      - MYSQL_DATABASE=cms_db
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
+    volumes:
+      - cms_db:/var/lib/mysql
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - microservices-network
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/ptho1504/git-config-repo
+      SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: discovery-service  # Multiple services
+    
+    
+  discovery-server:
+    build: ./discovery-server
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
+      SERVER_PORT: 8761
+      # SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL: "main"
+      # SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      # EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+      EUREKA_CLIENT_REGISTERWITHEUREKA: "false"  
+      EUREKA_CLIENT_FETCHREGISTRY: "false"
+    depends_on:
+      - config-server
+volumes:
+  cms_db:
+networks:
+  microservices-network:
+    driver: bridge
