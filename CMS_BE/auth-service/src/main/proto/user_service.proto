@@ -1,6 +1,6 @@
 syntax = "proto3";
 option java_multiple_files = true;
-option java_package = "com.ptho1504.microservices.user_service.user";
+option java_package = "com.ptho1504.microservices.auth_service.user";
 
 package user;
 

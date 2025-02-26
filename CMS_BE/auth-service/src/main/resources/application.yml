@@ -1,9 +1,9 @@
 spring:
   profiles:
-    active: dev  # Activate the 'dev' profile for discovery-service
+    active: dev # Activate the 'dev' profile for discovery-service
   config:
     # import: optional:configserver:http://config-server:8888  # Import configuration from Config Server
-    import: optional:configserver:http://localhost:8888  # Import configuration from Config Server
+    import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
   application:
     name: auth-service
   output:
@@ -12,3 +12,14 @@ spring:
 logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+application:
+  jwt:
+    secretkey: "abcdef"
+grpc-server:
+  user:
+    service:
+      address: "localhost:9090"
+
+grpc:
+  server:
+    port:  9000
