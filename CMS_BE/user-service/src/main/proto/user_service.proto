@@ -1,0 +1,66 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.ptho1504.microservices.user_service.user";
+
+package user;
+
+message User {
+    int32 id = 1;
+    string email = 2;
+    int32 role_id = 3;
+    bool enabled = 4;
+    string username = 5;
+}
+
+
+
+service UserService {
+    // rpc createUser (CreateUserRequest) returns (CreateUserResponse);
+    // rpc updateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    // rpc getAllUsers (GetAllUsersRequest) returns (GetAllUsersResponse);
+    // rpc getUserById (GetUserByIdRequest) returns (GetUserByIdResponse);
+    rpc findUserById (FindUserByIdRequest) returns (FindUserByIdResponse);
+}
+
+// message CreateUserRequest {
+//     string email = 1;
+//     string password = 2;
+//     int32 role_id = 3;
+// }
+
+// message CreateUserResponse {
+//     int32 user_id = 1;
+//     string message = 2;
+// }
+
+// message UpdateUserRequest {
+//     int32 user_id = 1;
+//     string email = 2;
+//     string password = 3;
+//     int32 role_id = 4;
+// }
+
+// message UpdateUserResponse {
+//     string message = 1;
+// }
+
+// message GetAllUsersRequest {
+//     string email = 1;
+//     int32 role_id = 2;
+//     int32 page = 3;
+//     int32 page_size = 4;
+//     bool enabled = 5;
+// }
+
+// message GetAllUsersResponse {
+//     repeated User users = 1;
+//     PaginationState paygination = 6;
+// }
+  
+message FindUserByIdRequest {
+    int32 user_id = 1;
+}
+  
+message FindUserByIdResponse {
+    User user = 1;
+}

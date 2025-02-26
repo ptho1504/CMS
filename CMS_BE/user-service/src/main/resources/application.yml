@@ -1,3 +1,6 @@
+grpc:
+  server:
+    port: 9090
 spring:
   profiles:
     active: dev  # Activate the 'dev' profile for discovery-service
@@ -18,3 +21,7 @@ management:
   tracing:
     sampling:
       probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health, info
