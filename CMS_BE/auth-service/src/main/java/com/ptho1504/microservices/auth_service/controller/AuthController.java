@@ -24,10 +24,15 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
     private final AuthService authService;
 
-    // @PostMapping("/register")
-    // public Object register(@RequestBody ){
+    @PostMapping("/register")
+    public String register(@RequestBody Object body) {
+        return "Register";
+    }
 
-    // }
+    @PostMapping("/login")
+    public String login(@RequestBody Object body) {
+        return "Login";
+    }
 
     @GetMapping("/test/user/{id}")
     public ResponseEntity<ApiResponse<User>> testingGrpcFindUserByID(@PathVariable("id") Integer id,
