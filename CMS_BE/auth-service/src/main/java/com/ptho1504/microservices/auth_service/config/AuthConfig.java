@@ -48,15 +48,6 @@ public class AuthConfig {
     // authentication
     public UserDetailsService userDetailsService(PasswordEncoder encoder) {
         return customUserDetailsService;
-        // UserDetails admin = User.withUsername("admin")
-        // .password(encoder.encode("admin"))
-        // .roles("ADMIN")
-        // .build();
-        // UserDetails user = User.withUsername("user")
-        // .password(encoder.encode("user"))
-        // .roles("USER")
-        // .build();
-        // return new InMemoryUserDetailsManager(admin, user);
     }
 
     @Bean

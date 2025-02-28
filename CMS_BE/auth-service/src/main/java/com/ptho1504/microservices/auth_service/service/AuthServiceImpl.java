@@ -2,10 +2,14 @@ package com.ptho1504.microservices.auth_service.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ptho1504.microservices.auth_service.client.UserClient;
+import com.ptho1504.microservices.auth_service.dto.request.LoginRequest;
 import com.ptho1504.microservices.auth_service.dto.request.RegisterRequest;
 import com.ptho1504.microservices.auth_service.exception.PasswordNotMatch;
 import com.ptho1504.microservices.auth_service.model.User;
@@ -16,11 +20,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+    private final AuthenticationManager authenticationManager;
     private Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final PasswordEncoder passwordEncoder;
-
     private final UserClient userClient;
+    private final JwtService jwtService;
 
     @Override
     public String saveUser(RegisterRequest request) {
@@ -36,7 +41,24 @@ public class AuthServiceImpl implements AuthService {
             return message;
 
         } catch (Exception e) {
-            logger.error("An error occurred while saveUser", e.getMessage());
+            logger.error("An error occurred while register ", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public String login(LoginRequest request) {
+        try {
+            Authentication authenticate = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+            if (authenticate.isAuthenticated()) {
+                return jwtService.generateToken(request.email());
+            } else {
+                throw new RuntimeException("invalid access");
+            }
+
+        } catch (Exception e) {
+            logger.error("An error occurred while login", e.getMessage());
             throw e;
         }
     }

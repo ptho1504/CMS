@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ptho1504.microservices.auth_service.dto.request.LoginRequest;
 import com.ptho1504.microservices.auth_service.dto.request.RegisterRequest;
 import com.ptho1504.microservices.auth_service.dto.response.ApiResponse;
 import com.ptho1504.microservices.auth_service.dto.response.ResponseUtil;
@@ -31,8 +32,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Object body) {
-        return "Login";
+    public String login(@RequestBody LoginRequest request) {
+        return authService.login(request);
     }
 
     // Request for testing
