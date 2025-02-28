@@ -16,4 +16,6 @@ public class User {
     private Boolean enabled;
 
     private Integer roleId;
+
+    private String password;
 }

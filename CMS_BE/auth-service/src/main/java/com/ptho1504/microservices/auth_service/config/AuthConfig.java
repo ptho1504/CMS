@@ -33,8 +33,9 @@ public class AuthConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF correctly in Spring Security 6
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auths/register", "/api/v1/auths/login").permitAll() // Allow public
-                                                                                                      // endpoints
+                        .requestMatchers("/api/v1/auths/register", "/api/v1/auths/login", "/api/v1/auths/test/**")
+                        .permitAll() // Allow public
+                        // endpoints
                         .anyRequest().authenticated() // Secure all other endpoints
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless
@@ -45,8 +46,17 @@ public class AuthConfig {
 
     @Bean
     // authentication
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
         return customUserDetailsService;
+        // UserDetails admin = User.withUsername("admin")
+        // .password(encoder.encode("admin"))
+        // .roles("ADMIN")
+        // .build();
+        // UserDetails user = User.withUsername("user")
+        // .password(encoder.encode("user"))
+        // .roles("USER")
+        // .build();
+        // return new InMemoryUserDetailsManager(admin, user);
     }
 
     @Bean
@@ -54,9 +64,10 @@ public class AuthConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(this.userDetailsService());
+        authenticationProvider.setUserDetailsService(this.userDetailsService(passwordEncoder()));
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
@@ -65,4 +76,11 @@ public class AuthConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
+    // @Bean
+    // public Authentication authenticate(Authentication authentication) throws
+    // AuthenticationException {
+    // log.info("Attempting authentication for user: {}", authentication.getName());
+    // return authenticationManager.authenticate(authentication);
+    // }
 }

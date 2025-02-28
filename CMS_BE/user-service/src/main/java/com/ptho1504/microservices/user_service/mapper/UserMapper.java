@@ -18,12 +18,14 @@ public class UserMapper {
                 .email(userRequest.email())
                 .createdAt(new Date())
                 .updatedAt(LocalDateTime.now())
+                .password(userRequest.password())
                 .build();
     }
 
     public UserResponse toUserResponse(User user) {
         return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedAt(),
                 user.getUpdatedAt(),
-                user.getEnabled());
+                user.getEnabled(),
+                user.getPassword());
     }
 }

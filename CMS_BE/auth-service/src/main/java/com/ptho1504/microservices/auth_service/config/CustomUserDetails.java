@@ -5,9 +5,11 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private String email;
     private String password;

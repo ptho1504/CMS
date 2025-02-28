@@ -40,4 +40,5 @@ public class UserController {
         return ResponseEntity
                 .ok(ResponseUtil.success(newUserResponse, "User created sucessfully", request.getRequestURI()));
     }
+
 }

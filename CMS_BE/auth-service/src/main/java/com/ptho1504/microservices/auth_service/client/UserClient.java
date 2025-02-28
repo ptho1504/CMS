@@ -7,5 +7,7 @@ import com.ptho1504.microservices.auth_service.user.CreateUserResponse;
 public interface UserClient {
     User findUserById(Integer Id);
 
+    User findUserByEmail(String email);
+
     CreateUserResponse saveUser(RegisterRequest request);
 }

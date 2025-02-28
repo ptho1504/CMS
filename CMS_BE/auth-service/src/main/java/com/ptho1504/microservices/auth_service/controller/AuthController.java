@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ptho1504.microservices.auth_service.dto.request.RegisterRequest;
 import com.ptho1504.microservices.auth_service.dto.response.ApiResponse;
 import com.ptho1504.microservices.auth_service.dto.response.ResponseUtil;
 import com.ptho1504.microservices.auth_service.model.User;
@@ -25,8 +26,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public String register(@RequestBody Object body) {
-        return "Register";
+    public String register(@RequestBody RegisterRequest request) {
+        return authService.saveUser(request);
     }
 
     @PostMapping("/login")
@@ -34,10 +35,17 @@ public class AuthController {
         return "Login";
     }
 
-    @GetMapping("/test/user/{id}")
-    public ResponseEntity<ApiResponse<User>> testingGrpcFindUserByID(@PathVariable("id") Integer id,
+    // Request for testing
+    @GetMapping("/test/user/email/{email}")
+    public ResponseEntity<ApiResponse<User>> testingGrpcFindUserByID(@PathVariable("email") String email,
             HttpServletRequest request) {
-        User user = this.authService.findUserById(id);
+        User user = this.authService.findUserByEmail(email);
         return ResponseEntity.ok(ResponseUtil.success(user, "Find User Successfully", request.getRequestURI()));
+    }
+
+    @GetMapping("/hello-world")
+    public String helloWorld(
+            HttpServletRequest request) {
+        return "Hello World";
     }
 }

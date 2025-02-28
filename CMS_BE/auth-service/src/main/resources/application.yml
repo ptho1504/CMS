@@ -29,3 +29,6 @@ grpc-server:
 grpc:
   server:
     port: 9000
+  security:
+    auth:
+      enalbed: false

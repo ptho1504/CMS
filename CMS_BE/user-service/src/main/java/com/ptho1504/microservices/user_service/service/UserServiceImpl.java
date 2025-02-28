@@ -2,6 +2,7 @@ package com.ptho1504.microservices.user_service.service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -15,6 +16,8 @@ import com.ptho1504.microservices.user_service.exception.UserNotFoundException;
 import com.ptho1504.microservices.user_service.model.User;
 import com.ptho1504.microservices.user_service.repository.UserRepository;
 import com.ptho1504.microservices.user_service.user.CreateUserResponse;
+import com.ptho1504.microservices.user_service.user.FindUserByEmailRequest;
+import com.ptho1504.microservices.user_service.user.FindUserByEmailResponse;
 import com.ptho1504.microservices.user_service.user.FindUserByIdRequest;
 import com.ptho1504.microservices.user_service.user.FindUserByIdResponse;
 import com.ptho1504.microservices.user_service.user.UserServiceGrpc;
@@ -55,6 +58,8 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
                                     .setEmail(user.getEmail())
                                     .setEnabled(user.getEnabled())
                                     .setUsername(user.getUsername())
+                                    .setPassword(user.getPassword())
+                                    .setRoleId(user.getRoleId())
                                     .build())
                     .build();
             responseObserver.onNext(response);
@@ -100,6 +105,38 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
         responseObserver.onNext(response);
         responseObserver.onCompleted();
 
+    }
+
+    @Override
+    public void findUserByEmail(FindUserByEmailRequest request,
+            StreamObserver<FindUserByEmailResponse> responseObserver) {
+        logger.info("Received gRPC request for user Email: " + request.getEmail());
+        String email = request.getEmail();
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isEmpty()) {
+            responseObserver.onError(Status.NOT_FOUND
+                    .withDescription("User not found with Email: " + email)
+                    .asRuntimeException());
+            return;
+        }
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            FindUserByEmailResponse response = FindUserByEmailResponse.newBuilder()
+                    .setUser(
+                            com.ptho1504.microservices.user_service.user.User.newBuilder()
+                                    .setId(user.getId())
+                                    .setEmail(user.getEmail())
+                                    .setEnabled(user.getEnabled())
+                                    .setUsername(user.getUsername())
+                                    .setRoleId(user.getRoleId())
+                                    .setPassword(user.getPassword())
+                                    .build())
+                    .build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
     }
 
     /* End */
