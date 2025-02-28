@@ -1,5 +1,7 @@
 package com.ptho1504.microservices.auth_service.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,8 +46,8 @@ public class AuthConfig {
                         .anyRequest().authenticated() // Secure all other endpoints
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless
-                .httpBasic(Customizer.withDefaults()); // Enable basic authentication
-
+                .httpBasic(Customizer.withDefaults()) // Enable basic authentication
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -69,9 +76,18 @@ public class AuthConfig {
     }
 
     // @Bean
-    // public Authentication authenticate(Authentication authentication) throws
-    // AuthenticationException {
-    // log.info("Attempting authentication for user: {}", authentication.getName());
-    // return authenticationManager.authenticate(authentication);
+    // CorsConfigurationSource corsConfigurationSource() {
+    // CorsConfiguration configuration = new CorsConfiguration();
+
+    // configuration.setAllowedOrigins(List.of("http://localhost:8005"));
+    // configuration.setAllowedMethods(List.of("GET", "POST"));
+    // configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+
+    // UrlBasedCorsConfigurationSource source = new
+    // UrlBasedCorsConfigurationSource();
+
+    // source.registerCorsConfiguration("/**", configuration);
+
+    // return source;
     // }
 }
