@@ -1,0 +1,27 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.ptho1504.microservices.auth_service.auth";
+
+package auth;
+
+service AuthService {
+    rpc validateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
+    rpc extractEmailAndRoleId (ExtractEmailAndRoleIdRequest) returns (ExtractEmailResponse);
+}
+
+message ValidateTokenRequest {
+    string token = 1;
+}
+
+message ValidateTokenResponse {
+    bool is_valid = 1;  // Example: Boolean response indicating token validity
+}
+
+message ExtractEmailAndRoleIdRequest {
+    string token = 1;
+}
+
+message ExtractEmailResponse {
+    string email = 1;
+    int32 role_id = 2;
+}

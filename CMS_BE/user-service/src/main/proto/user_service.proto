@@ -1,0 +1,56 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.ptho1504.microservices.user_service.user";
+
+package user;
+
+message User {
+    int32 id = 1;
+    string email = 2;
+    int32 role_id = 3;
+    bool enabled = 4;
+    string username = 5;
+    string password = 6;
+}
+
+message ErrorResponseGrpc {
+    int32 errorCode = 1;
+    string message = 2;
+  }
+
+service UserService {
+    rpc saveUser (CreateUserRequest) returns (CreateUserResponse);
+    // rpc updateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    // rpc getAllUsers (GetAllUsersRequest) returns (GetAllUsersResponse);
+    // rpc getUserById (GetUserByIdRequest) returns (GetUserByIdResponse);
+    rpc findUserById (FindUserByIdRequest) returns (FindUserByIdResponse);
+    rpc findUserByEmail (FindUserByEmailRequest) returns (FindUserByEmailResponse);
+}
+
+message CreateUserRequest {
+    string email = 1;
+    string password = 2;
+    string username = 3;
+    int32 role_id = 4;
+}
+
+message CreateUserResponse {
+    // int32 user_id = 1;
+    string message = 1;
+}
+  
+message FindUserByIdRequest {
+    int32 user_id = 1;
+}
+  
+message FindUserByIdResponse {
+    User user = 1;
+}
+
+message FindUserByEmailRequest {
+    string email = 1;
+}
+
+message FindUserByEmailResponse {
+    User user = 1;
+}

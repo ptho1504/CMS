@@ -9,37 +9,46 @@ services:
       - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - cms_db:/var/lib/mysql
-  config-server:
-    build: ./config-server
-    container_name: config-server
+  zipkin-server:
+    image: openzipkin/zipkin:2.23
+    mem_limit: 300m
     ports:
-      - "8888:8888"
+      - "9411:9411"
     networks:
       - microservices-network
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/ptho1504/git-config-repo
-      SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: discovery-service  # Multiple services
+    restart: always #Restart if there is a problem starting up
+  # config-server:
+  #   build: ./config-server
+  #   container_name: config-server
+  #   ports:
+  #     - "8888:8888"
+  #   networks:
+  #     - microservices-network
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: dev
+  #     SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/ptho1504/git-config-repo
+  #     SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: discovery-service  # Multiple services
     
     
-  discovery-server:
-    build: ./discovery-server
-    container_name: discovery-server
-    ports:
-      - "8761:8761"
-    networks:
-      - microservices-network
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
-      SERVER_PORT: 8761
-      # SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL: "main"
-      # SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
-      # EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
-      EUREKA_CLIENT_REGISTERWITHEUREKA: "false"  
-      EUREKA_CLIENT_FETCHREGISTRY: "false"
-    depends_on:
-      - config-server
+  # discovery-server:
+  #   build: ./discovery-server
+  #   container_name: discovery-server
+  #   ports:
+  #     - "8761:8761"
+  #   networks:
+  #     - microservices-network
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: dev
+  #     SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
+  #     SERVER_PORT: 8761
+  #     # SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL: "main"
+  #     # SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+  #     # EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+  #     EUREKA_CLIENT_REGISTERWITHEUREKA: "false"  
+  #     EUREKA_CLIENT_FETCHREGISTRY: "false"
+  #   depends_on:
+  #     - config-server
+  
 volumes:
   cms_db:
 networks:
