@@ -1,12 +1,16 @@
 package com.ptho1504.microservices.user_service.controller;
 
+import org.apache.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ptho1504.microservices.user_service.annotation.UserRequestHeader;
+import com.ptho1504.microservices.user_service.dto.UserFromHeader;
 import com.ptho1504.microservices.user_service.dto.request.CreateUserRequest;
 import com.ptho1504.microservices.user_service.dto.response.ApiResponse;
 import com.ptho1504.microservices.user_service.dto.response.ResponseUtil;
@@ -29,8 +33,9 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @GetMapping("hello-world")
-    public void helloWorld() {
-        System.out.println("Hello world");
+    public String helloWorld(@UserRequestHeader UserFromHeader user, HttpRequest request) {
+        System.out.println(user);
+        return "Hello world from User Controller";
     }
 
     @PostMapping()

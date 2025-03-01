@@ -1,9 +1,9 @@
 spring:
   profiles:
-    active: dev  # Activate the 'dev' profile for discovery-service
+    active: dev # Activate the 'dev' profile for discovery-service
   config:
     # import: optional:configserver:http://config-server:8888  # Import configuration from Config Server
-    import: optional:configserver:http://localhost:8888  # Import configuration from Config Server
+    import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
   application:
     name: gateway-service
   output:
@@ -18,3 +18,14 @@ management:
   tracing:
     sampling:
       probability: 1.0
+grpc-server:
+  auth:
+    service:
+      address: "localhost:9000"
+application:
+  jwt:
+    secretkey: "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437"
+    expiration-time: 3600000
+grpc:
+  server:
+    port: 9200

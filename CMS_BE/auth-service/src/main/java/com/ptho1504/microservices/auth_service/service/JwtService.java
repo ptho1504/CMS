@@ -38,8 +38,8 @@ public class JwtService {
         return createToken(claims, userName);
     }
 
-    public String extractRoleId(String token) {
-        return extractClaim(token, claims -> claims.get("role_id", String.class));
+    public Integer extractRoleId(String token) {
+        return extractClaim(token, claims -> claims.get("role_id", Integer.class));
     }
 
     private String createToken(Map<String, Object> claims, String email) {

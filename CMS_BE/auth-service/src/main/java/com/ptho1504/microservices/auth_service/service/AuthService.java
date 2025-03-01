@@ -12,4 +12,5 @@ public interface AuthService {
     String saveUser(RegisterRequest requestRegister);
 
     String login(LoginRequest request);
+
 }

@@ -40,14 +40,14 @@ public class AuthConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF correctly in Spring Security 6
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auths/register", "/api/v1/auths/login", "/api/v1/auths/test/**")
+                        .requestMatchers("/api/v1/auths/register", "/api/v1/auths/login", "/api/v1/auths/**")
                         .permitAll() // Allow public
                         // endpoints
                         .anyRequest().authenticated() // Secure all other endpoints
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless
-                .httpBasic(Customizer.withDefaults()) // Enable basic authentication
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .httpBasic(Customizer.withDefaults()); // Enable basic authentication
+                // .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

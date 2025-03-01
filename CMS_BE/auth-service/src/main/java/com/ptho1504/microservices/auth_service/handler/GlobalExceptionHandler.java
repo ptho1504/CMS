@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ptho1504.microservices.auth_service.dto.response.ApiResponse;
 import com.ptho1504.microservices.auth_service.dto.response.ResponseUtil;
 import com.ptho1504.microservices.auth_service.exception.PasswordNotMatch;
+import com.ptho1504.microservices.auth_service.user.ErrorResponseGrpc;
 
 import io.grpc.Metadata;
 import io.grpc.Status;
@@ -60,5 +61,19 @@ public class GlobalExceptionHandler {
         logger.error("Exception: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("An unexpected error occurred. Please try again.");
+    }
+
+    @GrpcExceptionHandler(Exception.class)
+    public StatusRuntimeException handleGrpcUserExisting(Exception e) {
+
+        Metadata metadata = new Metadata();
+        Metadata.Key<ErrorResponseGrpc> errorResponse = ProtoUtils.keyForProto(ErrorResponseGrpc.getDefaultInstance());
+        metadata.put(errorResponse, ErrorResponseGrpc.newBuilder().setMessage(e.getMessage())
+                .setErrorCode(20002).build());
+
+        var statusRuntimeException = Status.ALREADY_EXISTS.withDescription("An unexpected error occurred. Please try again.")
+                .asRuntimeException(metadata);
+        logger.error("GRPC: {}", metadata.get(errorResponse));
+        return statusRuntimeException;
     }
 }
