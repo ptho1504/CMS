@@ -44,7 +44,6 @@ public class Address {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @Column(name = "default", nullable = false)
-    @ColumnDefault("true")
+    @Column(name = "is_default", nullable = false)
     private Boolean defaultAdd;
 }

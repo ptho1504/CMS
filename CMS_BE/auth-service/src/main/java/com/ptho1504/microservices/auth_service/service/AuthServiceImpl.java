@@ -15,6 +15,7 @@ import com.ptho1504.microservices.auth_service.auth.ExtractEmailAndRoleIdRequest
 import com.ptho1504.microservices.auth_service.auth.ExtractEmailResponse;
 import com.ptho1504.microservices.auth_service.auth.ValidateTokenRequest;
 import com.ptho1504.microservices.auth_service.auth.ValidateTokenResponse;
+import com.ptho1504.microservices.auth_service.client.CustomerClient;
 import com.ptho1504.microservices.auth_service.client.UserClient;
 import com.ptho1504.microservices.auth_service.dto.request.CustomerRegisterRequest;
 import com.ptho1504.microservices.auth_service.dto.request.LoginRequest;
@@ -35,6 +36,7 @@ public class AuthServiceImpl extends AuthServiceImplBase implements AuthService 
 
     private final PasswordEncoder passwordEncoder;
     private final UserClient userClient;
+    private final CustomerClient customerClient;
     private final JwtService jwtService;
 
     @Override
@@ -107,9 +109,8 @@ public class AuthServiceImpl extends AuthServiceImplBase implements AuthService 
              * }
              * }
              */
-            // customerClient.saveCustomer(customerRequestRegister);
-
-            return userId;
+            int id = Integer.parseInt(userId);
+            return customerClient.saveCustomer(id, customerRequestRegister);
 
         } catch (Exception e) {
             logger.error("An error occurred while register ", e.getMessage());

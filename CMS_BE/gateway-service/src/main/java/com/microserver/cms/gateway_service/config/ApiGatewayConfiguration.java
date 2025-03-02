@@ -17,15 +17,26 @@ public class ApiGatewayConfiguration {
                 return builder
                                 .routes()
                                 .route(p -> p.path("/get")
-                                                .filters(f -> f.addRequestHeader("MyHeader", "15042002"))
+                                                .filters(f -> f.addRequestHeader("MyHeader", "150420"))
                                                 .uri("http://httpbin.org:80"))
                                 .route(p -> p.path("/api/v1/users/**")
                                                 .filters(f -> f.filter(authenticationFilter.apply(
                                                                 AuthenticationFilter.Config.builder()
                                                                                 .headerName("Authorization")
                                                                                 .build())))
-
                                                 .uri("lb://USER-SERVICE"))
+                                .route(p -> p.path("/api/v1/address/**")
+                                                .filters(f -> f.filter(authenticationFilter.apply(
+                                                                AuthenticationFilter.Config.builder()
+                                                                                .headerName("Authorization")
+                                                                                .build())))
+                                                .uri("lb://CUSTOMER-SERVICE"))
+                                .route(p -> p.path("/api/v1/customers/**")
+                                                .filters(f -> f.filter(authenticationFilter.apply(
+                                                                AuthenticationFilter.Config.builder()
+                                                                                .headerName("Authorization")
+                                                                                .build())))
+                                                .uri("lb://CUSTOMER-SERVICE"))
                                 // !DO NOT NEED TOKEN
                                 .route(p -> p.path("/api/v1/auths/**")
                                                 .uri("lb://AUTH-SERVICE"))

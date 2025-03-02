@@ -25,12 +25,4 @@ public class CustomerController {
         return "Hello World";
     }
 
-    @PostMapping("/address")
-    public Object createAddress(@UserRequestHeader UserFromHeader user, HttpRequest request,
-            CreateAddressRequest createAddressRequest) {
-        UserFromHeader fakeUser = new UserFromHeader("a@gmail.com", 1, 17);
-        customerService.createAddress(fakeUser.getEmail(), createAddressRequest);
-        return null;
-    }
-
 }

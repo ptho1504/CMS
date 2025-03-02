@@ -8,5 +8,7 @@ import com.microservice.cms.customer_service.customer.model.Customer;
 public interface CustomerService {
     Optional<Customer> findById(Integer id);
 
-    String createAddress(String email, CreateAddressRequest request);
+    Optional<Customer> findByUserId(Integer userId);
+
+    // String createAddress(Integer userId, CreateAddressRequest request);
 }

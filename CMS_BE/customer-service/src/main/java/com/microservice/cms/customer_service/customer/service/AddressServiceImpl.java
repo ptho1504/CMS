@@ -25,23 +25,27 @@ public class AddressServiceImpl implements AddressService {
     private final AddressMapper mapper;
 
     @Override
-    public String createAddress(CreateAddressRequest request) {
+    public String createAddress(Integer userId, CreateAddressRequest request) {
         try {
-            // Integer customerId = request.customerId();
-            // // Check CustomerId
 
-            // Optional<Customer> customOptional =
-            // this.customerService.findById(customerId);
+            // Check CustomerId
 
-            // if (customOptional.isEmpty()) {
-            // // throw Exception
-            // throw new CustomerNotFound(30001, "Not Found Customer By Id");
-            // }
+            Optional<Customer> customOptional = this.customerService.findByUserId(userId);
 
-            // Customer customer = customOptional.get();
-            // Address address = mapper.toAddress(request);
-            // address.setCustomer(customer);
-            // repository.save(address);
+            if (customOptional.isEmpty()) {
+                // throw Exception
+                throw new CustomerNotFound(30001, "Not Found Customer By UserId");
+            }
+
+            Customer customer = customOptional.get();
+            Address address = mapper.toAddress(request);
+
+            address.setDefaultAdd(true);
+
+            // ! Handle Set All default address of this customer is False
+
+            address.setCustomer(customer);
+            repository.save(address);
 
             return "Address created successfully";
         } catch (Exception e) {
