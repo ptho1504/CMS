@@ -4,12 +4,11 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public record UserResponse(
-        Integer id,
-        String username,
-        String email,
-        Date createdAt,
-        LocalDateTime updatedAt,
-        Boolean enabled,
-        String password) {
+                Integer id,
+                String username,
+                String email,
+                Date createdAt,
+                LocalDateTime updatedAt,
+                Boolean enabled) {
 
 }

@@ -64,7 +64,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException e) {
         logger.error("{}", e.getMessage());
         var errors = new HashMap<String, String>();
