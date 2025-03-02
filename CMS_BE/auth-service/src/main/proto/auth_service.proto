@@ -24,4 +24,5 @@ message ExtractEmailAndRoleIdRequest {
 message ExtractEmailResponse {
     string email = 1;
     int32 role_id = 2;
+    int32 user_id = 3;
 }

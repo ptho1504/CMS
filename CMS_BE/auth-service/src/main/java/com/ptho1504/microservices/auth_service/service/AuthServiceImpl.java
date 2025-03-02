@@ -15,7 +15,9 @@ import com.ptho1504.microservices.auth_service.auth.ExtractEmailAndRoleIdRequest
 import com.ptho1504.microservices.auth_service.auth.ExtractEmailResponse;
 import com.ptho1504.microservices.auth_service.auth.ValidateTokenRequest;
 import com.ptho1504.microservices.auth_service.auth.ValidateTokenResponse;
+import com.ptho1504.microservices.auth_service.client.CustomerClient;
 import com.ptho1504.microservices.auth_service.client.UserClient;
+import com.ptho1504.microservices.auth_service.dto.request.CustomerRegisterRequest;
 import com.ptho1504.microservices.auth_service.dto.request.LoginRequest;
 import com.ptho1504.microservices.auth_service.dto.request.RegisterRequest;
 import com.ptho1504.microservices.auth_service.exception.PasswordNotMatch;
@@ -34,6 +36,7 @@ public class AuthServiceImpl extends AuthServiceImplBase implements AuthService 
 
     private final PasswordEncoder passwordEncoder;
     private final UserClient userClient;
+    private final CustomerClient customerClient;
     private final JwtService jwtService;
 
     @Override
@@ -46,8 +49,8 @@ public class AuthServiceImpl extends AuthServiceImplBase implements AuthService 
             }
 
             request.setPassword(passwordEncoder.encode(request.getPassword()));
-            String message = userClient.saveUser(request).getMessage();
-            return message;
+            String userId = userClient.saveUser(request).getMessage();
+            return userId;
 
         } catch (Exception e) {
             logger.error("An error occurred while register ", e.getMessage());
@@ -82,6 +85,39 @@ public class AuthServiceImpl extends AuthServiceImplBase implements AuthService 
         return this.userClient.findUserByEmail(email);
     }
 
+    @Override
+    public String saveCustomers(CustomerRegisterRequest customerRequestRegister) {
+        try {
+            // Validate Password Confirmation
+
+            if (!customerRequestRegister.getPassword().equals(customerRequestRegister.getConfirmPassword())) {
+                throw new PasswordNotMatch(20002, "Password not  match");
+            }
+
+            // Save User
+            String userId = userClient.saveUser(new RegisterRequest(customerRequestRegister.getEmail(),
+                    customerRequestRegister.getUsername(),
+                    passwordEncoder.encode(customerRequestRegister.getPassword()), null))
+                    .getMessage();
+
+            // Save customer
+            /*
+             * {
+             * name: "",
+             * phone: "",
+             * roleId: {
+             * }
+             * }
+             */
+            int id = Integer.parseInt(userId);
+            return customerClient.saveCustomer(id, customerRequestRegister);
+
+        } catch (Exception e) {
+            logger.error("An error occurred while register ", e.getMessage());
+            throw e;
+        }
+    }
+
     // Grpc
     @Override
     public void extractEmailAndRoleId(ExtractEmailAndRoleIdRequest request,
@@ -93,11 +129,13 @@ public class AuthServiceImpl extends AuthServiceImplBase implements AuthService 
 
             String email = this.jwtService.extractUsername(token);
             int roleId = this.jwtService.extractRoleId(token);
+            int userId = this.jwtService.extractUserId(token);
             // int roleId = Integer.parseInt(this.jwtService.extractRoleId(token));
 
             ExtractEmailResponse response = ExtractEmailResponse.newBuilder()
                     .setEmail(email)
                     .setRoleId(roleId)
+                    .setUserId(userId)
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
@@ -115,7 +153,6 @@ public class AuthServiceImpl extends AuthServiceImplBase implements AuthService 
             String token = request.getToken();
 
             jwtService.validateToken(token);
-            
 
             ValidateTokenResponse response = ValidateTokenResponse.newBuilder()
                     .setIsValid(true)

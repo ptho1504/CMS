@@ -1,10 +1,12 @@
-package com.ptho1504.microservices.user_service.dto;
+package com.microservice.cms.customer_service.user.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
+@AllArgsConstructor
 public class UserFromHeader {
         private String email;
         private Integer roleId;

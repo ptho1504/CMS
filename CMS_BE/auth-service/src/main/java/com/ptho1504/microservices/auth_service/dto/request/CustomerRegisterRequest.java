@@ -5,14 +5,12 @@ import jakarta.validation.constraints.Size;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class RegisterRequest {
+public class CustomerRegisterRequest {
         @NotNull(message = "Email is required")
         private String email;
 
@@ -27,4 +25,12 @@ public class RegisterRequest {
         @NotNull(message = "Confirm password is required")
         @Size(min = 3, message = "Confirm password must be at least 3 characters long")
         private String confirmPassword;
+
+        @NotNull(message = "Name is required")
+        @Size(min = 3, message = "Name must be at least 3 characters")
+        private String name;
+
+        @NotNull(message = "Phone is required")
+        @Size(min = 3, message = "Phone must be at least 3 characters")
+        private String phone;
 }

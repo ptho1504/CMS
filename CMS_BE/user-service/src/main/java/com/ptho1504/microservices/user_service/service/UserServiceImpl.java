@@ -107,10 +107,10 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
                 .createdAt(new Date())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        userRepository.save(newUser);
+        String userId = userRepository.save(newUser).getId().toString();
 
         CreateUserResponse response = CreateUserResponse.newBuilder()
-                .setMessage("User have been created")
+                .setMessage(userId)
                 .build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -169,7 +169,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
                     .updatedAt(LocalDateTime.now())
                     .build();
             userRepository.save(newUser);
-            return "User have been created";
+            return userRepository.save(newUser).getId().toString();
 
         } catch (Exception e) {
             logger.error("An error occurred while save the user", e.getMessage());

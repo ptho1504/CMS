@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ptho1504.microservices.auth_service.dto.request.CustomerRegisterRequest;
 import com.ptho1504.microservices.auth_service.dto.request.LoginRequest;
 import com.ptho1504.microservices.auth_service.dto.request.RegisterRequest;
 import com.ptho1504.microservices.auth_service.dto.response.ApiResponse;
@@ -30,6 +31,11 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@RequestBody RegisterRequest request) {
         return authService.saveUser(request);
+    }
+
+    @PostMapping("/register/customers")
+    public String registerCustomers(@RequestBody CustomerRegisterRequest request) {
+        return authService.saveCustomers(request);
     }
 
     @PostMapping("/login")

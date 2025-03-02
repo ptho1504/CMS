@@ -4,7 +4,8 @@ import lombok.Builder;
 
 @Builder
 public record UserAndRoleId(
-                String email,
-                int roleId) {
+        String email,
+        int roleId,
+        int userId) {
 
 }
