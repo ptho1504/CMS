@@ -7,12 +7,18 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ptho1504.microservices.user_service.dto.request.CreateUserRequest;
+import com.ptho1504.microservices.user_service.dto.request.PaginationRequest;
+import com.ptho1504.microservices.user_service.dto.response.PageResult;
+import com.ptho1504.microservices.user_service.dto.response.UserResponse;
 import com.ptho1504.microservices.user_service.exception.UserExistingException;
 import com.ptho1504.microservices.user_service.exception.UserExistingExceptionGrpc;
 import com.ptho1504.microservices.user_service.exception.UserNotFoundException;
+import com.ptho1504.microservices.user_service.mapper.UserMapper;
 import com.ptho1504.microservices.user_service.model.User;
 import com.ptho1504.microservices.user_service.repository.UserRepository;
 import com.ptho1504.microservices.user_service.user.CreateUserResponse;
@@ -21,6 +27,7 @@ import com.ptho1504.microservices.user_service.user.FindUserByEmailResponse;
 import com.ptho1504.microservices.user_service.user.FindUserByIdRequest;
 import com.ptho1504.microservices.user_service.user.FindUserByIdResponse;
 import com.ptho1504.microservices.user_service.user.UserServiceGrpc;
+import com.ptho1504.microservices.user_service.util.PaginationUtils;
 
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
@@ -33,6 +40,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
 
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     /* Grpc-Server */
     @Override
@@ -185,6 +193,22 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
             logger.error("An error occurred while get the user", e.getMessage());
             throw e;
         }
+    }
+
+    @Override
+    public PageResult<UserResponse> findAll(PaginationRequest request) {
+        Pageable pageable = PaginationUtils.getPageable(request.getPage(), request.getSize(), request.getDirection(),
+                request.getSortField());
+        Page<User> entities = userRepository.findAll(pageable);
+        List<UserResponse> entitiesDto = entities.stream().map(userMapper::toUserResponse).toList();
+
+        return new PageResult<UserResponse>(
+                entitiesDto,
+                entities.getTotalPages(),
+                entities.getTotalElements(),
+                entities.getSize(),
+                entities.getNumber(),
+                entities.isEmpty());
     }
 
 }

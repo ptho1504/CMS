@@ -25,7 +25,6 @@ public class UserMapper {
     public UserResponse toUserResponse(User user) {
         return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedAt(),
                 user.getUpdatedAt(),
-                user.getEnabled(),
-                user.getPassword());
+                user.getEnabled());
     }
 }
