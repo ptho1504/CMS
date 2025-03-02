@@ -1,4 +1,4 @@
-package com.ptho1504.microservices.user_service.annotation;
+package com.microservice.cms.customer_service.annotation;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -7,7 +7,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.ptho1504.microservices.user_service.dto.UserFromHeader;
+import com.microservice.cms.customer_service.user.dto.UserFromHeader;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -21,12 +21,12 @@ public class UserRequestHeaderResolver implements HandlerMethodArgumentResolver 
 
         String email = request.getHeader("X-User-Email");
         Integer roleIdHeader = Integer.parseInt(request.getHeader("X-User-RoleId"));
-        Integer userIdInteger = Integer.parseInt(request.getHeader("X-User-UserId"));
+        Integer userIdHeader = Integer.parseInt(request.getHeader("X-User-UserId"));
 
         return UserFromHeader.builder()
                 .email(email)
                 .roleId(roleIdHeader)
-                .userId(userIdInteger)
+                .userId(userIdHeader)
                 .build();
     }
 

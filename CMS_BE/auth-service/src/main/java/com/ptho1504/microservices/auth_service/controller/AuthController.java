@@ -32,6 +32,11 @@ public class AuthController {
         return authService.saveUser(request);
     }
 
+    @PostMapping("/register/customers")
+    public String registerCustomers(@RequestBody RegisterRequest request) {
+        return authService.saveUser(request);
+    }
+
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) {
         return authService.login(request);

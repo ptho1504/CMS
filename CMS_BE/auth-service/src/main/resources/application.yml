@@ -21,6 +21,9 @@ grpc-server:
   user:
     service:
       address: "localhost:9090"
+  customer:
+    service:
+      address: "localhost:9110"
 
 grpc:
   server:

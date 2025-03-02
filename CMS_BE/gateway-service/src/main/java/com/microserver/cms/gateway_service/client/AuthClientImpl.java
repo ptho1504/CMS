@@ -44,7 +44,8 @@ public class AuthClientImpl implements AuthClient {
                     .build();
             ExtractEmailResponse response = authServiceBlockingStub.extractEmailAndRoleId(request);
 
-            return UserAndRoleId.builder().email(response.getEmail()).roleId(response.getRoleId()).build();
+            return UserAndRoleId.builder().email(response.getEmail()).roleId(response.getRoleId())
+                    .userId(response.getUserId()).build();
         } catch (Exception e) {
             logger.error("An error occurred while extractEmailAndRoleId", e.getMessage());
             throw e;

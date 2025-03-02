@@ -1,0 +1,28 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.ptho1504.microservices.auth_service.customer";
+
+package customer;
+
+message Customer {
+    int32 id = 1;
+    string name = 2;
+    int32 user_id = 3;
+    string phone = 4;
+}
+
+
+
+service CustomerService {
+    rpc saveCustomer (CreateCustomerRequest) returns (CreateCustomerResponse);
+}
+
+message CreateCustomerRequest {
+    int32 id = 1;
+    string name = 2;
+    int32 user_id = 3;
+    string phone = 4;
+}
+message CreateCustomerResponse {
+    string message = 1;
+}
