@@ -11,8 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.ptho1504.microservices.user_service.dto.UserFromHeader;
 import com.ptho1504.microservices.user_service.dto.request.CreateUserRequest;
 import com.ptho1504.microservices.user_service.dto.request.PaginationRequest;
+import com.ptho1504.microservices.user_service.dto.request.UpdateUserRequest;
 import com.ptho1504.microservices.user_service.dto.response.PageResult;
 import com.ptho1504.microservices.user_service.dto.response.UserResponse;
 import com.ptho1504.microservices.user_service.exception.UserExistingException;
@@ -209,6 +211,54 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase impleme
                 entities.getSize(),
                 entities.getNumber(),
                 entities.isEmpty());
+    }
+
+    @Override
+    public UserResponse findInformationByUserId(Integer id) {
+        try {
+            User user = this.userRepository.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException(10001, "Not found informartion user " + id));
+            return userMapper.toUserResponse(user);
+        } catch (Exception e) {
+            logger.error("An error occurred while findInformationByUserId", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public UserResponse updateUserById(Integer id, UpdateUserRequest updatedUser) {
+        try {
+            User user = this.findById(id)
+                    .orElseThrow(() -> new UserNotFoundException(10001, "Not found informartion user " + id));
+            user.setUsername(updatedUser.username());
+
+            User userResponse = this.userRepository.save(user);
+
+            return userMapper.toUserResponse(userResponse);
+
+        } catch (Exception e) {
+            logger.error("An error occurred while updateUserById", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public UserResponse updateMyInformation(UserFromHeader userfromHeader, UpdateUserRequest updatedUser) {
+        try {
+            User user = this.findByEmail(userfromHeader.getEmail())
+                    .orElseThrow(() -> new UserNotFoundException(10001,
+                            "Not found informartion user with email " + userfromHeader.getEmail()));
+
+            user.setUsername(updatedUser.username());
+
+            User userResponse = this.userRepository.save(user);
+
+            return userMapper.toUserResponse(userResponse);
+
+        } catch (Exception e) {
+            logger.error("An error occurred while updateUserById", e.getMessage());
+            throw e;
+        }
     }
 
 }
