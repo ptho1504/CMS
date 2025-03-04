@@ -37,7 +37,7 @@ public class Customer {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", updatable = false)
     private Integer userId;
 
     @OneToMany(mappedBy = "customer")
