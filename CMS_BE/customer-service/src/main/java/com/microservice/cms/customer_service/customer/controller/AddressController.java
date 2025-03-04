@@ -22,13 +22,16 @@ import lombok.RequiredArgsConstructor;
 public class AddressController {
     private final AddressService addressService;
 
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse<String>> createAddress(@UserRequestHeader UserFromHeader user,
-            HttpServletRequest request,
-            @RequestBody CreateAddressRequest createAddressRequest) {
-        // System.out.println(user);
-        String response = addressService.createAddress(user.getUserId(), createAddressRequest);
-        return ResponseEntity
-                .ok(ResponseUtil.success(response, "User created sucessfully", request.getRequestURI()));
-    }
+    // @PostMapping("/")
+    // public ResponseEntity<ApiResponse<String>> createAddress(@UserRequestHeader
+    // UserFromHeader user,
+    // HttpServletRequest request,
+    // @RequestBody CreateAddressRequest createAddressRequest) {
+    // // System.out.println(user);
+    // String response = addressService.createAddress(user.getUserId(),
+    // createAddressRequest);
+    // return ResponseEntity
+    // .ok(ResponseUtil.success(response, "User created sucessfully",
+    // request.getRequestURI()));
+    // }
 }

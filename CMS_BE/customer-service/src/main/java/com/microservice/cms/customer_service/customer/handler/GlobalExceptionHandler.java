@@ -1,4 +1,4 @@
-package com.microservice.cms.customer_service.handler;
+package com.microservice.cms.customer_service.customer.handler;
 
 import java.util.Arrays;
 import java.util.HashMap;

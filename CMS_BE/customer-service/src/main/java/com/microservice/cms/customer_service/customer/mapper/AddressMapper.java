@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Component;
 
 import com.microservice.cms.customer_service.customer.dto.request.CreateAddressRequest;
+import com.microservice.cms.customer_service.customer.dto.response.AddressResponse;
 import com.microservice.cms.customer_service.customer.model.Address;
 import com.microservice.cms.customer_service.customer.model.Customer;
 
@@ -15,6 +16,16 @@ public class AddressMapper {
                 .province(request.province())
                 .street(request.street())
                 .ward(request.ward())
+                .build();
+    }
+
+    public AddressResponse toAddressResponse(Address address) {
+        return AddressResponse.builder()
+                .id(address.getId())
+                .street(address.getStreet())
+                .ward(address.getWard())
+                .province(address.getProvince())
+                .defaultAdd(address.getDefaultAdd())
                 .build();
     }
 }
