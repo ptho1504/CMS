@@ -18,6 +18,8 @@ public interface ProductTypeService {
 
     Optional<ProductType> findById(Integer id);
 
+    ProductTypeResponse findByProductTypeId(Integer id);
+
     Optional<ProductType> findByName(String name);
 
     List<ProductTypeResponse> findAll();

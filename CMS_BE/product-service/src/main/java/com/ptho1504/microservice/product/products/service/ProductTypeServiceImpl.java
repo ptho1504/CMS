@@ -115,4 +115,21 @@ public class ProductTypeServiceImpl implements ProductTypeService {
         }
     }
 
+    @Override
+    public ProductTypeResponse findByProductTypeId(Integer id) {
+        try {
+
+            Optional<ProductType> prOptionalId = this.findById(id);
+
+            if (prOptionalId.isEmpty()) {
+                throw new NotFoundProductType(40001, "Product Type is not found with id");
+            }
+
+            return mapper.toProductTypeResponse(prOptionalId.get());
+        } catch (Exception e) {
+            logger.error("Some thing wrong", e.getMessage());
+            throw e;
+        }
+    }
+
 }

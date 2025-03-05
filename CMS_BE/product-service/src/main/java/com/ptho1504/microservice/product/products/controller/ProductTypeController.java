@@ -40,6 +40,18 @@ public class ProductTypeController {
                                                 request.getRequestURI()));
         }
 
+        @GetMapping("/{id}")
+        ResponseEntity<ApiResponse<ProductTypeResponse>> findById(
+                        @PathVariable("id") Integer productTypeId,
+                        HttpServletRequest request) {
+
+                ProductTypeResponse response = this.productTypeService.findByProductTypeId(productTypeId);
+
+                return ResponseEntity.ok(
+                                ResponseUtil.success(response, "findById successfully",
+                                                request.getRequestURI()));
+        }
+
         @PostMapping()
         ResponseEntity<ApiResponse<String>> createProductType(
                         @Valid @RequestBody CreateProductTypeRequest createRequest,

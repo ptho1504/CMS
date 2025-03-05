@@ -30,6 +30,7 @@ public class ProductTypeMapper {
         return ProductTypeResponse.builder()
                 .name(productType.getName())
                 .id(productType.getId())
+                .products(productType.getProducts())
                 .created_at(productType.getCreatedAt())
                 .build();
     }
