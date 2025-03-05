@@ -2,6 +2,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "OrderServiceApplication",
+            "request": "launch",
+            "mainClass": "com.ptho1504.microservice.order_service.OrderServiceApplication",
+            "projectName": "order-service"
+        },
+        {
+            "type": "java",
+            "name": "ProductApplication",
+            "request": "launch",
+            "mainClass": "com.ptho1504.microservice.product.ProductApplication",
+            "projectName": "product"
+        },
+        {
+            "type": "java",
+            "name": "ProductApplication",
+            "request": "launch",
+            "mainClass": "com.ptho1504.microservice.product.ProductApplication",
+            "projectName": "product-service"
+        },
+        {
+            "type": "java",
             "name": "AuthServiceApplication",
             "request": "launch",
             "mainClass": "com.ptho1504.microservices.auth_service.AuthServiceApplication",

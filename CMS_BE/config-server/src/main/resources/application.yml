@@ -13,7 +13,7 @@ spring:
         #   search-locations: classpath:/configurations
         git:
             uri: https://github.com/ptho1504/git-config-repo
-            searchPaths: discovery-service, customer-service, gateway-service, user-service, auth-service # TODO add some service in heare bro 
+            searchPaths: discovery-service, customer-service, gateway-service, user-service, auth-service, product-service, order-service # TODO add some service in heare bro 
             # cloneOnStart: true
   output:
     ansi:
