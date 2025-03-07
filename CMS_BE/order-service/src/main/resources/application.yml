@@ -1,6 +1,6 @@
-# grpc:
-#   server:
-#     port: 9090
+grpc:
+  server:
+    port: 9120
 spring:
   profiles:
     active: dev  # Activate the 'dev' profile for discovery-service
