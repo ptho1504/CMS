@@ -7,6 +7,6 @@ public record UpdateAddressRequest(
                 @NotNull(message = "Street is required") @Size(min = 3, message = "Street must be at least 3 characters long") String street,
                 @NotNull(message = "Province is required") @Size(min = 3, message = "Province must be at least 3 characters long") String province,
                 @NotNull(message = "Ward is required") @Size(min = 3, message = "Ward must be at least 3 characters long") String ward,
-                @NotNull(message = "Ward is required") Boolean defaultAdd) {
+                @NotNull(message = "Ward is required") Boolean isDefault) {
 
 }

@@ -10,6 +10,6 @@ public record AddressResponse(
         String street,
         String province,
         String ward,
-        Boolean defaultAdd) {
+        Boolean isDefault) {
 
 }

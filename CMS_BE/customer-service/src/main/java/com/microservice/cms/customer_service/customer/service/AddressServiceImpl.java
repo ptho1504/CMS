@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.microservice.cms.customer_service.customer.dto.request.CreateAddressRequest;
 import com.microservice.cms.customer_service.customer.dto.response.AddressResponse;
+import com.microservice.cms.customer_service.customer.exception.AddressNotFoundException;
 import com.microservice.cms.customer_service.customer.exception.CustomerNotFound;
 import com.microservice.cms.customer_service.customer.mapper.AddressMapper;
 import com.microservice.cms.customer_service.customer.model.Address;
@@ -34,7 +35,7 @@ public class AddressServiceImpl implements AddressService {
 
             Address address = mapper.toAddress(request);
 
-            address.setDefaultAdd(true);
+            address.setIsDefault(true);
 
             // ! Handle Set All default address of this customer is False
 
@@ -110,6 +111,25 @@ public class AddressServiceImpl implements AddressService {
             throw e;
         }
 
+    }
+
+    @Override
+    public AddressResponse findDefaultAddressByCustomerId(Integer customerId) {
+        try {
+            Optional<Address> addressOptional = this.repository.findByCustomerIdAndIsDefault(customerId, true);
+
+            if (addressOptional.isEmpty()) {
+                throw new AddressNotFoundException(40004, "Default Address not found with customerId");
+            }
+
+            Address address = addressOptional.get();
+
+            return mapper.toAddressResponse(address);
+
+        } catch (Exception e) {
+            logger.error("An error occurred while findDefaultAddressByCustomerId", e.getMessage());
+            throw e;
+        }
     }
 
 }
