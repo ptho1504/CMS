@@ -1,0 +1,48 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.ptho1504.microservices.product_service.product";
+
+package product;
+
+
+message ProductType {
+    int32 id = 1;
+    string name = 2;
+}
+
+message Product {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    double price = 4;
+    int32 stockQuantity = 5;
+    ProductType productType = 6;
+}
+
+service ProductService {
+    rpc GetProductStock(ProductRequest) returns (ProductResponse);
+    rpc DeductStock(DeductStockRequest) returns (DeductStockResponse);
+}
+
+message ProductRequest {
+    int32 productId = 1;
+  }
+  
+  message ProductResponse {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    double price = 4;
+    int32 stockQuantity = 5;
+    ProductType productType = 6;
+  }
+
+  message DeductStockRequest {
+    int32 productId = 1;
+    int32 quantity = 2;
+  }
+  
+  message DeductStockResponse {
+    bool success = 1;
+    string message = 2;
+  }

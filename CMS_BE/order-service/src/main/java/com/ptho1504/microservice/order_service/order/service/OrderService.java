@@ -1,5 +1,7 @@
 package com.ptho1504.microservice.order_service.order.service;
 
-public interface OrderService {
+import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderRequest;
 
+public interface OrderService {
+    Object createOrder(CreateOrderRequest orderRequest);
 }

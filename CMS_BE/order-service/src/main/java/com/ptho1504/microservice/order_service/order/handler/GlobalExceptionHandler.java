@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.ptho1504.microservice.order_service.order.dto.response.ApiResponse;
+import com.ptho1504.microservice.order_service.order.dto.response.ResponseUtil;
+import com.ptho1504.microservice.order_service.order.exception.OrderItemNotFound;
+import com.ptho1504.microservice.order_service.order.exception.OrderNotFound;
+import com.ptho1504.microservice.order_service.order.exception.ProductNotEnoughQuantity;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -20,20 +25,38 @@ import jakarta.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // @ExceptionHandler(NotFoundProductType.class)
-    // @ResponseStatus(HttpStatus.NOT_FOUND)
-    // public ApiResponse<Object> handle(NotFoundProductType e, HttpServletRequest request) {
-    //     logger.error("{}", e.getMessage());
-    //     return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
-    //             request.getRequestURI());
-    // }
+    @ExceptionHandler(OrderNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<Object> handle(OrderNotFound e, HttpServletRequest request) {
+        logger.error("{}", e.getMessage());
+        return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
+                request.getRequestURI());
+    }
+
+    @ExceptionHandler(OrderItemNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<Object> handle(OrderItemNotFound e, HttpServletRequest request) {
+        logger.error("{}", e.getMessage());
+        return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
+                request.getRequestURI());
+    }
+
+    @ExceptionHandler(ProductNotEnoughQuantity.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ApiResponse<Object> handle(ProductNotEnoughQuantity e, HttpServletRequest request) {
+        logger.error("{}", e.getMessage());
+        return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
+                request.getRequestURI());
+    }
 
     // @ExceptionHandler(ExistingProductType.class)
     // @ResponseStatus(HttpStatus.CONFLICT)
-    // public ApiResponse<Object> handle(ExistingProductType e, HttpServletRequest request) {
-    //     logger.error("{}", e.getMessage());
-    //     return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
-    //             request.getRequestURI());
+    // public ApiResponse<Object> handle(ExistingProductType e, HttpServletRequest
+    // request) {
+    // logger.error("{}", e.getMessage());
+    // return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(),
+    // e.getErrorCode(),
+    // request.getRequestURI());
     // }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

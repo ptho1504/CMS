@@ -1,5 +1,8 @@
 package com.ptho1504.microservice.order_service.order.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,8 +27,9 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     Order order;
 
     @Column(name = "product_id")

@@ -24,7 +24,6 @@ public class ProductRepsonse {
     String description;
     Double price;
     Integer stockQuantity;
-    Integer productTypeId;
     ProductType productType;
     private Date createdAt;
     private LocalDateTime updatedAt;

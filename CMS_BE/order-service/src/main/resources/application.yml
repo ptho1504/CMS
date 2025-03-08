@@ -25,3 +25,13 @@ management:
     web:
       exposure:
         include: health, info
+grpc-server:
+  user:
+    service:
+      address: "localhost:9090"
+  customer:
+    service:
+      address: "localhost:9110"
+  product:
+    service:
+      address: "localhost:9130"

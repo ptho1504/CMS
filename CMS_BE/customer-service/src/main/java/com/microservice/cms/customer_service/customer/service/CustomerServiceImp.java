@@ -77,7 +77,7 @@ public class CustomerServiceImp extends CustomerServiceImplBase implements Custo
         Optional<Customer> optional = this.findByUserId(userId);
 
         if (optional.isEmpty()) {
-            throw new GrpcCustomerNotFound(40001, String.format("User with email %s already exists", userId));
+            throw new GrpcCustomerNotFound(40001, String.format("Customere with userID %d not found", userId));
         }
 
         Customer customer = optional.get();
