@@ -4,4 +4,6 @@ import com.ptho1504.microservice.order_service.order.dto.response.CustomerRespon
 
 public interface CustomerClient {
     CustomerRespone findCustomerByUserId(Integer userId);
+
+    CustomerRespone findCustomerById(Integer customerId);
 }

@@ -29,6 +29,7 @@ message ErrorResponseGrpc {
 service CustomerService {
     rpc saveCustomer (CreateCustomerRequest) returns (CreateCustomerResponse);
     rpc findCustomerByUserId(UserIdRequest) returns (CustomerResponse);
+    rpc findCustomerById(CustomerIdRequest) returns (CustomerResponse);
 }
 
 message CreateCustomerRequest {
@@ -44,6 +45,11 @@ message CreateCustomerResponse {
 message UserIdRequest {
     int32 user_id = 1;
 }
+
+message CustomerIdRequest {
+    int32 customer_id = 1;
+}
+
 message CustomerResponse {
     Customer customer = 1;
 }

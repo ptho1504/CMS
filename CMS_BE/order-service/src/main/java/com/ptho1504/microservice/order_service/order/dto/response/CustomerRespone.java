@@ -12,7 +12,7 @@ import lombok.Setter;
 public class CustomerRespone {
     Integer id;
     String name;
-    Integer user_id;
+    // Integer user_id;
     String phone;
     AddressResponse address;
 }

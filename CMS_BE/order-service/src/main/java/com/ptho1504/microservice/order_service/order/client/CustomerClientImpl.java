@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ptho1504.microservice.order_service.order.dto.response.AddressResponse;
 import com.ptho1504.microservice.order_service.order.dto.response.CustomerRespone;
 import com.ptho1504.microservices.order_service.customer.Customer;
+import com.ptho1504.microservices.order_service.customer.CustomerIdRequest;
 import com.ptho1504.microservices.order_service.customer.CustomerResponse;
 import com.ptho1504.microservices.order_service.customer.CustomerServiceGrpc;
 import com.ptho1504.microservices.order_service.customer.UserIdRequest;
@@ -45,7 +46,37 @@ public class CustomerClientImpl implements CustomerClient {
                         return CustomerRespone.builder()
                                         .name(customerRepsonse.getName())
                                         .id(customerRepsonse.getId())
-                                        .user_id(customerRepsonse.getId())
+                                        // .user_id(customerRepsonse.getId())
+                                        .phone(customerRepsonse.getPhone())
+                                        .address(
+                                                        AddressResponse.builder()
+                                                                        .id(customerRepsonse.getAddress().getId())
+                                                                        .street(customerRepsonse.getAddress()
+                                                                                        .getStreet())
+                                                                        .province(customerRepsonse.getAddress()
+                                                                                        .getProvince())
+                                                                        .ward(customerRepsonse.getAddress().getWard())
+                                                                        .is_default(customerRepsonse.getAddress()
+                                                                                        .getIsDefault())
+                                                                        .build())
+                                        .build();
+                } catch (Exception e) {
+                        logger.error("An error occurred while findCustomerByUserId", e.getMessage());
+                        throw e;
+                }
+        }
+
+        @Override
+        public CustomerRespone findCustomerById(Integer customerId) {
+                try {
+                        CustomerIdRequest request = CustomerIdRequest.newBuilder().setCustomerId(customerId).build();
+                        CustomerResponse response = customerServiceBlockingStub.findCustomerById(request);
+                        Customer customerRepsonse = response.getCustomer();
+
+                        return CustomerRespone.builder()
+                                        .name(customerRepsonse.getName())
+                                        .id(customerRepsonse.getId())
+                                        // .user_id(customerRepsonse.getId())
                                         .phone(customerRepsonse.getPhone())
                                         .address(
                                                         AddressResponse.builder()

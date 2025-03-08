@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ptho1504.microservice.order_service.order.dto.response.ApiResponse;
 import com.ptho1504.microservice.order_service.order.dto.response.ResponseUtil;
+import com.ptho1504.microservice.order_service.order.exception.NotHaveEnoughPermissionToChangeStaus;
 import com.ptho1504.microservice.order_service.order.exception.OrderItemNotFound;
 import com.ptho1504.microservice.order_service.order.exception.OrderNotFound;
 import com.ptho1504.microservice.order_service.order.exception.ProductNotEnoughQuantity;
@@ -44,6 +45,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProductNotEnoughQuantity.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public ApiResponse<Object> handle(ProductNotEnoughQuantity e, HttpServletRequest request) {
+        logger.error("{}", e.getMessage());
+        return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
+                request.getRequestURI());
+    }
+
+    @ExceptionHandler(NotHaveEnoughPermissionToChangeStaus.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiResponse<Object> handle(NotHaveEnoughPermissionToChangeStaus e, HttpServletRequest request) {
         logger.error("{}", e.getMessage());
         return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
                 request.getRequestURI());

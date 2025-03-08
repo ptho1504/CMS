@@ -29,6 +29,7 @@ import com.microservice.cms.customer_service.customer.repository.CustomerReposit
 import com.microservice.cms.customer_service.customer.util.PaginationUtils;
 import com.ptho1504.microservices.customer_service.customer.CreateCustomerRequest;
 import com.ptho1504.microservices.customer_service.customer.CreateCustomerResponse;
+import com.ptho1504.microservices.customer_service.customer.CustomerIdRequest;
 import com.ptho1504.microservices.customer_service.customer.CustomerServiceGrpc.CustomerServiceImplBase;
 import com.ptho1504.microservices.customer_service.customer.UserIdRequest;
 
@@ -66,8 +67,6 @@ public class CustomerServiceImp extends CustomerServiceImplBase implements Custo
         responseObserver.onCompleted();
     }
 
-    // Grpc-end
-
     @Override
     public void findCustomerByUserId(UserIdRequest request,
             StreamObserver<com.ptho1504.microservices.customer_service.customer.CustomerResponse> responseObserver) {
@@ -91,6 +90,30 @@ public class CustomerServiceImp extends CustomerServiceImplBase implements Custo
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void findCustomerById(CustomerIdRequest request,
+            StreamObserver<com.ptho1504.microservices.customer_service.customer.CustomerResponse> responseObserver) {
+        logger.info("Received gRPC request for findCustomerByUserId ID: " + request.getCustomerId());
+        Integer customerId = request.getCustomerId();
+
+        Optional<Customer> optional = this.findById(customerId);
+
+        if (optional.isEmpty()) {
+            throw new GrpcCustomerNotFound(40001, String.format("Customere with userID %d not found", customerId));
+        }
+
+        Customer customer = optional.get();
+        AddressResponse address = this.addressService.findDefaultAddressByCustomerId(customer.getId());
+
+        com.ptho1504.microservices.customer_service.customer.CustomerResponse response =
+
+                this.customerMapper.toCustomerResponseGrpc(customer, address);
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    // Grpc-end
     @Override
     public Optional<Customer> findById(Integer id) {
         try {
