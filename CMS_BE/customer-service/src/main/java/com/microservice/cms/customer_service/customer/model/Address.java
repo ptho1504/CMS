@@ -36,7 +36,7 @@ public class Address {
     @Column(name = "street", nullable = false)
     private String street;
 
-    @Column(name = "province ", nullable = false)
+    @Column(name = "province", nullable = false)
     private String province;
 
     @Column(name = "ward")
@@ -48,5 +48,5 @@ public class Address {
     private Customer customer;
 
     @Column(name = "is_default", nullable = false)
-    private Boolean defaultAdd;
+    private Boolean isDefault;
 }

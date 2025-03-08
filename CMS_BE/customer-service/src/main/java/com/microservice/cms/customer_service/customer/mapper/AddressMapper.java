@@ -25,7 +25,7 @@ public class AddressMapper {
                 .street(address.getStreet())
                 .ward(address.getWard())
                 .province(address.getProvince())
-                .defaultAdd(address.getDefaultAdd())
+                .isDefault(address.getIsDefault())
                 .build();
     }
 }

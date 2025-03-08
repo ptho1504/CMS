@@ -37,9 +37,17 @@ public class ApiGatewayConfiguration {
                                                                                 .headerName("Authorization")
                                                                                 .build())))
                                                 .uri("lb://CUSTOMER-SERVICE"))
+                                .route(p -> p.path("/api/v1/orders/**")
+                                                .filters(f -> f.filter(authenticationFilter.apply(
+                                                                AuthenticationFilter.Config.builder()
+                                                                                .headerName("Authorization")
+                                                                                .build())))
+                                                .uri("lb://ORDER-SERVICE"))
                                 // !DO NOT NEED TOKEN
                                 .route(p -> p.path("/api/v1/auths/**")
                                                 .uri("lb://AUTH-SERVICE"))
+                                .route(p -> p.path("/api/v1/products/**")
+                                                .uri("lb://PRODUCT-SERVICE"))
                                 .build();
         }
 

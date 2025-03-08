@@ -13,6 +13,8 @@ public interface AddressService {
 
     List<AddressResponse> findAllByCustomerId(Integer customerId);
 
+    AddressResponse findDefaultAddressByCustomerId(Integer customerId);
+
     AddressResponse saveAddress(Address savedAdress);
 
     String deleteAddress(Address address);

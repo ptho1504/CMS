@@ -4,17 +4,31 @@ option java_package = "com.ptho1504.microservices.auth_service.customer";
 
 package customer;
 
+message Address {
+    int32 id = 1;
+    string street = 2;
+    string province = 3;
+    string ward = 4;
+    bool is_default = 5;
+    
+}
+
 message Customer {
     int32 id = 1;
     string name = 2;
     int32 user_id = 3;
     string phone = 4;
+    Address address = 5; 
 }
-
+message ErrorResponseGrpc {
+    int32 errorCode = 1;
+    string message = 2;
+  }
 
 
 service CustomerService {
     rpc saveCustomer (CreateCustomerRequest) returns (CreateCustomerResponse);
+    rpc findCustomerByUserId(UserIdRequest) returns (CustomerResponse);
 }
 
 message CreateCustomerRequest {
@@ -25,4 +39,11 @@ message CreateCustomerRequest {
 }
 message CreateCustomerResponse {
     string message = 1;
+}
+
+message UserIdRequest {
+    int32 user_id = 1;
+}
+message CustomerResponse {
+    Customer customer = 1;
 }
