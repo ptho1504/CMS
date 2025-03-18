@@ -8,8 +8,6 @@ import com.ptho1504.microservice.product.products.dto.request.UpdateProductType;
 import com.ptho1504.microservice.product.products.dto.response.ProductTypeResponse;
 import com.ptho1504.microservice.product.products.model.ProductType;
 
-import jakarta.validation.Valid;
-
 public interface ProductTypeService {
 
     String createProductType(CreateProductTypeRequest createRequest);

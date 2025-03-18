@@ -2,15 +2,13 @@ package com.microserver.cms.gateway_service.filter;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import com.microserver.cms.gateway_service.client.AuthClient;
 import com.microserver.cms.gateway_service.dto.response.UserAndRoleId;
 import com.microserver.cms.gateway_service.exception.InvalidTokenException;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ptho1504.microservices.auth_service.dto.request.CustomerRegisterRequest;
@@ -16,10 +15,8 @@ import com.ptho1504.microservices.auth_service.dto.response.ApiResponse;
 import com.ptho1504.microservices.auth_service.dto.response.ResponseUtil;
 import com.ptho1504.microservices.auth_service.model.User;
 import com.ptho1504.microservices.auth_service.service.AuthService;
-import com.ptho1504.microservices.auth_service.service.AuthServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @RestController

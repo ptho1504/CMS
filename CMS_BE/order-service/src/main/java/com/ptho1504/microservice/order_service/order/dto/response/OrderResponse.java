@@ -1,7 +1,6 @@
 package com.ptho1504.microservice.order_service.order.dto.response;
 
 import com.ptho1504.microservice.order_service.order.model.Order;
-import com.ptho1504.microservices.order_service.customer.Customer;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -5,16 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.ptho1504.microservice.order_service.order.dto.response.AddressResponse;
-import com.ptho1504.microservice.order_service.order.dto.response.CustomerRespone;
 import com.ptho1504.microservice.order_service.order.dto.response.DeductStockMessage;
 import com.ptho1504.microservice.order_service.order.mapper.ProductMapper;
 import com.ptho1504.microservice.order_service.order.model.Product;
-import com.ptho1504.microservices.order_service.customer.Customer;
-import com.ptho1504.microservices.order_service.customer.CustomerResponse;
-import com.ptho1504.microservices.order_service.customer.CustomerServiceGrpc;
-import com.ptho1504.microservices.order_service.customer.CustomerServiceGrpc.CustomerServiceBlockingStub;
-import com.ptho1504.microservices.order_service.customer.UserIdRequest;
 import com.ptho1504.microservices.order_service.product.DeductStockRequest;
 import com.ptho1504.microservices.order_service.product.DeductStockResponse;
 import com.ptho1504.microservices.order_service.product.ProductRequest;
@@ -24,7 +17,6 @@ import com.ptho1504.microservices.order_service.product.ProductServiceGrpc.Produ
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class ProductClientImpl implements ProductClient {

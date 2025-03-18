@@ -1,25 +1,16 @@
 package com.ptho1504.microservice.order_service.order.service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.ptho1504.microservice.order_service.order.client.ProductClient;
 import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderItemRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.UpdateOrderItemRequest;
 import com.ptho1504.microservice.order_service.order.exception.OrderItemNotFound;
-import com.ptho1504.microservice.order_service.order.model.Order;
 import com.ptho1504.microservice.order_service.order.model.OrderItem;
 import com.ptho1504.microservice.order_service.order.repository.OrderItemRepository;
-import com.ptho1504.microservices.order_service.product.ProductRequest;
-import com.ptho1504.microservices.order_service.product.ProductResponse;
 
 import lombok.RequiredArgsConstructor;
 

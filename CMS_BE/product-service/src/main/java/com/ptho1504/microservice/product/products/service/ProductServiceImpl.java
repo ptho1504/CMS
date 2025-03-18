@@ -1,7 +1,6 @@
 package com.ptho1504.microservice.product.products.service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -167,8 +166,7 @@ public class ProductServiceImpl extends ProductServiceImplBase implements Produc
                     .setMessage("Not enough stock")
                     .build());
             responseObserver.onCompleted();
-        }
-        else {
+        } else {
             product.setStockQuantity(product.getStockQuantity() - request.getQuantity());
             repository.save(product);
             DeductStockResponse response = DeductStockResponse.newBuilder()

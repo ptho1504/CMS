@@ -1,20 +1,16 @@
 package com.ptho1504.microservice.order_service.order.producer;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import com.ptho1504.microservice.order_service.order.kafka.OrderConfirmationRequest;
 
-// import com.ptho1504.microservice.order_service.order.dto.request.OrderConfirmationRequest;
-import org.springframework.messaging.Message;
 import lombok.RequiredArgsConstructor;
-import static org.springframework.kafka.support.KafkaHeaders.TOPIC;
-
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor

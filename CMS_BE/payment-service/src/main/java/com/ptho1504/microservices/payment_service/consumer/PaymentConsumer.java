@@ -1,16 +1,10 @@
 package com.ptho1504.microservices.payment_service.consumer;
 
-import java.time.LocalDateTime;
-
-import javax.management.Notification;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Service;
-
-import com.ptho1504.microservices.payment_service.dto.request.OrderConfirmationRequest;
 
 import lombok.RequiredArgsConstructor;
 

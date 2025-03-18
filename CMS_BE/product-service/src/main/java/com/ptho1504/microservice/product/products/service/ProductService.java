@@ -9,8 +9,6 @@ import com.ptho1504.microservice.product.products.dto.response.PageResult;
 import com.ptho1504.microservice.product.products.dto.response.ProductRepsonse;
 import com.ptho1504.microservice.product.products.model.Product;
 
-import jakarta.validation.Valid;
-
 public interface ProductService {
 
     ProductRepsonse createProduct(CreateProductRequest createRequest);
