@@ -1,9 +1,6 @@
 package com.ptho1504.microservices.user_service.service;
 
-import java.util.List;
 import java.util.Optional;
-
-import org.springframework.stereotype.Service;
 
 import com.ptho1504.microservices.user_service.dto.UserFromHeader;
 import com.ptho1504.microservices.user_service.dto.request.CreateUserRequest;

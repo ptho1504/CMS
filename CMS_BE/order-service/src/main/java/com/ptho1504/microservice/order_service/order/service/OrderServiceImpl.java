@@ -36,8 +36,6 @@ import com.ptho1504.microservice.order_service.order.model.Product;
 import com.ptho1504.microservice.order_service.order.producer.OrderProducer;
 import com.ptho1504.microservice.order_service.order.repository.OrderRepository;
 import com.ptho1504.microservice.order_service.order.util.PaginationUtils;
-import com.ptho1504.microservices.order_service.product.ProductRequest;
-import com.ptho1504.microservices.order_service.product.ProductResponse;
 
 import lombok.RequiredArgsConstructor;
 

@@ -2,7 +2,6 @@ package com.microservice.cms.customer_service.customer.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -13,12 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.microservice.cms.customer_service.customer.dto.request.CreateAddressRequest;
 import com.microservice.cms.customer_service.customer.dto.response.AddressResponse;
 import com.microservice.cms.customer_service.customer.exception.AddressNotFoundException;
-import com.microservice.cms.customer_service.customer.exception.CustomerNotFound;
 import com.microservice.cms.customer_service.customer.mapper.AddressMapper;
 import com.microservice.cms.customer_service.customer.model.Address;
 import com.microservice.cms.customer_service.customer.model.Customer;
 import com.microservice.cms.customer_service.customer.repository.AddressRepository;
-import com.microservice.cms.customer_service.customer.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,7 +1,5 @@
 package com.ptho1504.microservice.order_service.order.service;
 
-import java.util.List;
-
 import com.ptho1504.microservice.order_service.order.dto.request.ChangeStatusOrderRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.PaginationRequest;

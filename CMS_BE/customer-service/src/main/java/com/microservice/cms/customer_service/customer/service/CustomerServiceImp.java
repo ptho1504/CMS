@@ -21,7 +21,6 @@ import com.microservice.cms.customer_service.customer.exception.AddressNotFound;
 import com.microservice.cms.customer_service.customer.exception.CustomerNotFound;
 import com.microservice.cms.customer_service.customer.exception.GrpcCustomerNotFound;
 import com.microservice.cms.customer_service.customer.exception.ListAddressNotFound;
-import com.microservice.cms.customer_service.customer.mapper.AddressMapper;
 import com.microservice.cms.customer_service.customer.mapper.CustomerMapper;
 import com.microservice.cms.customer_service.customer.model.Address;
 import com.microservice.cms.customer_service.customer.model.Customer;

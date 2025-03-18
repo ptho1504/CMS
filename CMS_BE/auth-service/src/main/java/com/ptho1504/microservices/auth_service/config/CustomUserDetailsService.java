@@ -1,22 +1,16 @@
 package com.ptho1504.microservices.auth_service.config;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ptho1504.microservices.auth_service.client.UserClient;
 import com.ptho1504.microservices.auth_service.mapper.UserGrpcMapper;
 import com.ptho1504.microservices.auth_service.model.User;
-import com.ptho1504.microservices.auth_service.service.AuthService;
 
-import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Service

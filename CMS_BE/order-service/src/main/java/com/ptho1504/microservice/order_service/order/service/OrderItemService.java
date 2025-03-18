@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderItemRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.UpdateOrderItemRequest;
-import com.ptho1504.microservice.order_service.order.model.Order;
 import com.ptho1504.microservice.order_service.order.model.OrderItem;
 
 public interface OrderItemService {

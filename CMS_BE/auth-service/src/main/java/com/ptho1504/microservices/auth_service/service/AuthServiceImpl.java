@@ -1,14 +1,11 @@
 package com.ptho1504.microservices.auth_service.service;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import com.ptho1504.microservices.auth_service.auth.AuthServiceGrpc.AuthServiceImplBase;
 import com.ptho1504.microservices.auth_service.auth.ExtractEmailAndRoleIdRequest;

@@ -7,16 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.ptho1504.microservices.auth_service.customer.CreateCustomerRequest;
 import com.ptho1504.microservices.auth_service.customer.CreateCustomerResponse;
-
 import com.ptho1504.microservices.auth_service.customer.CustomerServiceGrpc;
 import com.ptho1504.microservices.auth_service.customer.CustomerServiceGrpc.CustomerServiceBlockingStub;
 import com.ptho1504.microservices.auth_service.dto.request.CustomerRegisterRequest;
 import com.ptho1504.microservices.auth_service.mapper.CustomerMapper;
-import com.ptho1504.microservices.auth_service.mapper.UserGrpcMapper;
 import com.ptho1504.microservices.auth_service.model.Customer;
-import com.ptho1504.microservices.auth_service.user.CreateUserRequest;
-import com.ptho1504.microservices.auth_service.user.CreateUserResponse;
-import com.ptho1504.microservices.auth_service.user.UserServiceGrpc;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;

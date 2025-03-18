@@ -18,7 +18,6 @@ import com.ptho1504.microservices.auth_service.user.UserServiceGrpc;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import lombok.RequiredArgsConstructor;
 
 @Service
 public class UserClientImpl implements UserClient {

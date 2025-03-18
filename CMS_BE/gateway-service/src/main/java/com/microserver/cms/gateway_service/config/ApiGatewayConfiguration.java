@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.microserver.cms.gateway_service.client.AuthClient;
 import com.microserver.cms.gateway_service.filter.AuthenticationFilter;
-import com.microserver.cms.gateway_service.filter.RouteValidator;
 
 @Configuration
 public class ApiGatewayConfiguration {

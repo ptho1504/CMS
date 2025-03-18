@@ -2,7 +2,6 @@ package com.microservice.cms.customer_service.customer.controller;
 
 import java.util.List;
 
-import org.apache.http.HttpRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

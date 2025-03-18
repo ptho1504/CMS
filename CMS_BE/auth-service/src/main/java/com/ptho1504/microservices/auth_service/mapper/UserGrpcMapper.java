@@ -1,6 +1,5 @@
 package com.ptho1504.microservices.auth_service.mapper;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.ptho1504.microservices.auth_service.config.CustomUserDetails;
