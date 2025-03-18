@@ -7,6 +7,7 @@ import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderRequ
 import com.ptho1504.microservice.order_service.order.dto.request.PaginationRequest;
 import com.ptho1504.microservice.order_service.order.dto.response.OrderResponse;
 import com.ptho1504.microservice.order_service.order.dto.response.PageResult;
+import com.ptho1504.microservice.order_service.order.kafka.OrderConfirmationRequest;
 
 public interface OrderService {
     OrderResponse createOrder(CreateOrderRequest orderRequest);
@@ -23,5 +24,6 @@ public interface OrderService {
 
     PageResult<OrderResponse> findAllOrdersByMe(PaginationRequest requestFindAll, Integer userId);
 
-    
+    Object test(OrderConfirmationRequest request);
+
 }
