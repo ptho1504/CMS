@@ -19,6 +19,7 @@ import com.ptho1504.microservice.order_service.order.client.ProductClient;
 import com.ptho1504.microservice.order_service.order.dto.request.ChangeStatusOrderRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderItemRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderRequest;
+// import com.ptho1504.microservice.order_service.order.dto.request.OrderConfirmationRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.PaginationRequest;
 import com.ptho1504.microservice.order_service.order.dto.response.CustomerRespone;
 import com.ptho1504.microservice.order_service.order.dto.response.DeductStockMessage;
@@ -27,10 +28,12 @@ import com.ptho1504.microservice.order_service.order.dto.response.PageResult;
 import com.ptho1504.microservice.order_service.order.exception.NotHaveEnoughPermissionToChangeStaus;
 import com.ptho1504.microservice.order_service.order.exception.OrderNotFound;
 import com.ptho1504.microservice.order_service.order.exception.ProductNotEnoughQuantity;
+import com.ptho1504.microservice.order_service.order.kafka.OrderConfirmationRequest;
 import com.ptho1504.microservice.order_service.order.mapper.OrderMapper;
 import com.ptho1504.microservice.order_service.order.model.Order;
 import com.ptho1504.microservice.order_service.order.model.OrderItem;
 import com.ptho1504.microservice.order_service.order.model.Product;
+import com.ptho1504.microservice.order_service.order.producer.OrderProducer;
 import com.ptho1504.microservice.order_service.order.repository.OrderRepository;
 import com.ptho1504.microservice.order_service.order.util.PaginationUtils;
 import com.ptho1504.microservices.order_service.product.ProductRequest;
@@ -45,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
     private final CustomerClient customerClient;
     private final OrderRepository orderRepository;
     private final ProductClient productClient;
+    private final OrderProducer orderProducer;
     private final OrderItemService orderItemService;
     private final OrderMapper mapper;
 
@@ -254,6 +258,17 @@ public class OrderServiceImpl implements OrderService {
             logger.error("Some thing error when findAllOrdersByMe ", e.getMessage());
             throw e;
         }
+    }
+
+    /*
+     * TEST
+     * 
+     * 
+     */
+    @Override
+    public Object test(OrderConfirmationRequest request) {
+        orderProducer.sendOrderConfirmation(request);
+        return null;
     }
 
 }
