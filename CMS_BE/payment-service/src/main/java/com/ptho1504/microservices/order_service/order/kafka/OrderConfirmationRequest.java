@@ -7,6 +7,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ptho1504.microservices.payment_service.model.OrderItem;
 import com.ptho1504.microservices.payment_service.model.PaymentMethod;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderConfirmationRequest {
     @JsonProperty("orderId")
     Integer orderId;
