@@ -32,6 +32,7 @@ import com.ptho1504.microservice.order_service.order.kafka.OrderConfirmationRequ
 import com.ptho1504.microservice.order_service.order.mapper.OrderMapper;
 import com.ptho1504.microservice.order_service.order.model.Order;
 import com.ptho1504.microservice.order_service.order.model.OrderItem;
+import com.ptho1504.microservice.order_service.order.model.PaymentMethod;
 import com.ptho1504.microservice.order_service.order.model.Product;
 import com.ptho1504.microservice.order_service.order.producer.OrderProducer;
 import com.ptho1504.microservice.order_service.order.repository.OrderRepository;
@@ -101,6 +102,17 @@ public class OrderServiceImpl implements OrderService {
 
             // Save notify
             Order savedOrder = orderRepository.save(order);
+
+            // Create topic and send to Kafka
+            OrderConfirmationRequest orderConfirmationRequest = new OrderConfirmationRequest().builder()
+                    .orderId(savedOrder.getId())
+                    .totalPrice(savedOrder.getTotalPrice())
+                    .customerId(savedOrder.getCustomerId())
+                    .paymentMethod(PaymentMethod.PAYOS) // Default
+                    .orderitems(savedOrder.getOrderitems())
+                    .build();
+
+            orderProducer.sendOrderConfirmation(orderConfirmationRequest);
 
             return OrderResponse.builder().customer(customerRespone).order(savedOrder).build();
         } catch (Exception e) {

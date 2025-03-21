@@ -16,20 +16,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderProducerImpl implements OrderProducer {
     private final Logger logger = LoggerFactory.getLogger(OrderProducerImpl.class);
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, OrderConfirmationRequest> kafkaTemplate;
 
     // private final
     @Override
     public void sendOrderConfirmation(OrderConfirmationRequest orderConfirmation) {
 
         try {
-            CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send("order-topic", orderConfirmation);
+            CompletableFuture<SendResult<String, OrderConfirmationRequest>> future = kafkaTemplate.send("order-topic",
+                    orderConfirmation);
             future.whenComplete((res, ex) -> {
                 if (ex == null) {
                     System.out.println(
                             "Sent message=[" + orderConfirmation.toString() + "] with offset =["
                                     + res.getRecordMetadata());
-                    // logger.info(String.format("Request have been send ::%s", orderConfirmation.toString()));
+                    // logger.info(String.format("Request have been send ::%s",
+                    // orderConfirmation.toString()));
                 } else {
                     logger.error(ex.getMessage());
                 }
