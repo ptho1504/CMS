@@ -3,10 +3,13 @@ package com.ptho1504.microservices.payment_service.controller;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.ptho1504.microservices.payment_service.dto.request.PaginationRequest;
 import com.ptho1504.microservices.payment_service.dto.response.ApiResponse;
 import com.ptho1504.microservices.payment_service.dto.response.PageResult;
@@ -40,6 +43,25 @@ public class PaymentController {
         PageResult<Object> response = this.paymentService.findAll(requestFindAll);
         return ResponseEntity
                 .ok(ResponseUtil.success(response, "findAll order Successfully", request.getRequestURI()));
+    }
 
+    @PostMapping("/pay-os/handle-web-hook")
+    public ResponseEntity<ApiResponse<Object>> handleWebHookPayOs(
+            @RequestBody ObjectNode bNode,
+            HttpServletRequest request) {
+
+        Object response = this.paymentService.handlePayOsWebHook(bNode);
+        return ResponseEntity
+                .ok(ResponseUtil.success(response, "handleWebHook order Successfully", request.getRequestURI()));
+    }
+
+    @GetMapping(value = "/success")
+    public String Success() {
+        return "success";
+    }
+
+    @GetMapping(value = "/cancel")
+    public String Cancel() {
+        return "cancel";
     }
 }

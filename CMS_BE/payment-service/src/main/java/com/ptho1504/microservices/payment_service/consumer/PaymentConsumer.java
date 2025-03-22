@@ -34,7 +34,7 @@ public class PaymentConsumer {
                 throw new OrderExisted(60002, "Order has been existed");
             }
 
-            Payment savedPayment = new Payment().builder()
+            Payment payment = Payment.builder()
                     .createdAt(new Date())
                     .updatedAt(LocalDateTime.now())
                     .customerId(orderConfirmationRequest.getCustomerId())
@@ -44,13 +44,13 @@ public class PaymentConsumer {
                     .status(PaymentStatus.PENDING)
                     .build();
             // Save payment
-            paymentService.savePayment(savedPayment);
+            Payment savedPayment = paymentService.savePayment(payment);
 
             // Call api-3rd to processing data
-
+            paymentService.handlePayment(savedPayment);
             /*
              * Send message success to order by kafka
-             * Send messsage sucess to notify by kafka
+             * Send message success to notify by kafka
              */
         } catch (Exception e) {
             logger.error("Some thing wrong", e.getMessage());
