@@ -30,9 +30,9 @@ management:
       exposure:
         include: health, info
 payos:
-  clientId: cccccccc
-  apiKey: aaaaaaaa
-  checkSumKey: bbbbbbbbbbb
+  clientId: 
+  apiKey: 
+  checkSumKey: 
   webhookUrl: https://dbaf-104-28-237-71.ngrok-free.app/api/v1/payments/pay-os/handle-web-hook
   returnUrl: https://dbaf-104-28-237-71.ngrok-free.app/api/v1/payments/success
   cancelUrl: https://dbaf-104-28-237-71.ngrok-free.app/api/v1/payments/cancel
