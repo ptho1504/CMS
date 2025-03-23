@@ -3,16 +3,23 @@ package com.ptho1504.microservices.payment_service.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
+import com.ptho1504.microservices.notify_service.notify.kafka.PaymentEvent;
 import com.ptho1504.microservices.order_service.order.kafka.OrderConfirmationRequest;
 
 @Configuration
@@ -50,6 +57,27 @@ public class KafkaPaymentConfig {
         ConcurrentKafkaListenerContainerFactory<String, OrderConfirmationRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
+    }
+
+    @Bean
+    public ProducerFactory<String, PaymentEvent> producerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers); // Change to your Kafka broker
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                org.springframework.kafka.support.serializer.JsonSerializer.class);
+
+        return new DefaultKafkaProducerFactory<String, PaymentEvent>(configProps);
+    }
+
+    @Bean
+    public NewTopic paymenTopic() {
+        return new NewTopic("payment-topic", 3, (short) 1);
+    }
+
+    @Bean
+    public KafkaTemplate<String, PaymentEvent> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
     }
 
 }

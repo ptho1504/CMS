@@ -12,6 +12,8 @@ import com.ptho1504.microservice.order_service.order.model.Order;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findById(Integer orderId);
 
+    Optional<Order> findByIdAndCustomerId(Integer orderId, Integer customId);
+
     List<Order> findByCustomerId(Integer customerId);
 
     Page<Order> findByCustomerId(Integer customerId, Pageable pageable);

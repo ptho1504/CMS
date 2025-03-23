@@ -2,17 +2,17 @@
   "configurations": [
     {
       "type": "java",
-      "name": "PaymentServiceApplication",
-      "request": "launch",
-      "mainClass": "com.ptho1504.microservices.payment_service.PaymentServiceApplication",
-      "projectName": "payment-service"
-    },
-    {
-      "type": "java",
       "name": "ProductApplication",
       "request": "launch",
       "mainClass": "com.ptho1504.microservice.product.ProductApplication",
       "projectName": "product"
+    },
+    {
+      "type": "java",
+      "name": "PaymentServiceApplication",
+      "request": "launch",
+      "mainClass": "com.ptho1504.microservices.payment_service.PaymentServiceApplication",
+      "projectName": "payment-service"
     },
     {
       "type": "java",

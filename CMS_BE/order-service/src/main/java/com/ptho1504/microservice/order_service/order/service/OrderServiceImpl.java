@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.ptho1504.microservice.order_service.order._enum.OrderStatus;
 import com.ptho1504.microservice.order_service.order.client.CustomerClient;
+import com.ptho1504.microservice.order_service.order.client.PaymentClient;
 import com.ptho1504.microservice.order_service.order.client.ProductClient;
 import com.ptho1504.microservice.order_service.order.dto.request.ChangeStatusOrderRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderItemRequest;
@@ -25,11 +26,13 @@ import com.ptho1504.microservice.order_service.order.dto.response.CustomerRespon
 import com.ptho1504.microservice.order_service.order.dto.response.DeductStockMessage;
 import com.ptho1504.microservice.order_service.order.dto.response.OrderResponse;
 import com.ptho1504.microservice.order_service.order.dto.response.PageResult;
+import com.ptho1504.microservice.order_service.order.dto.response.PaymentResponse;
 import com.ptho1504.microservice.order_service.order.exception.NotHaveEnoughPermissionToChangeStaus;
 import com.ptho1504.microservice.order_service.order.exception.OrderNotFound;
 import com.ptho1504.microservice.order_service.order.exception.ProductNotEnoughQuantity;
 import com.ptho1504.microservice.order_service.order.kafka.OrderConfirmationRequest;
 import com.ptho1504.microservice.order_service.order.mapper.OrderMapper;
+import com.ptho1504.microservice.order_service.order.mapper.PaymentMapper;
 import com.ptho1504.microservice.order_service.order.model.Order;
 import com.ptho1504.microservice.order_service.order.model.OrderItem;
 import com.ptho1504.microservice.order_service.order.model.PaymentMethod;
@@ -37,6 +40,7 @@ import com.ptho1504.microservice.order_service.order.model.Product;
 import com.ptho1504.microservice.order_service.order.producer.OrderProducer;
 import com.ptho1504.microservice.order_service.order.repository.OrderRepository;
 import com.ptho1504.microservice.order_service.order.util.PaginationUtils;
+import com.ptho1504.microservices.payment_service.payment.Payment;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,9 +51,31 @@ public class OrderServiceImpl implements OrderService {
     private final CustomerClient customerClient;
     private final OrderRepository orderRepository;
     private final ProductClient productClient;
+    private final PaymentClient paymentClient;
     private final OrderProducer orderProducer;
     private final OrderItemService orderItemService;
     private final OrderMapper mapper;
+    private final PaymentMapper paymapper;
+
+    @Override
+    public Optional<Order> findByOrderIdAndCustomerId(Integer orderId, Integer custId) {
+        try {
+            return this.orderRepository.findByIdAndCustomerId(orderId, custId);
+        } catch (Exception e) {
+            this.logger.error("Some thing wrong when findByOrderIdAndCustomerId", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public Order saveOrder(Order savedOrder) {
+        try {
+            return this.orderRepository.save(savedOrder);
+        } catch (Exception e) {
+            this.logger.error("Some thing wrong when saveOrder", e.getMessage());
+            throw e;
+        }
+    }
 
     @Override
     public OrderResponse createOrder(CreateOrderRequest orderRequest) {
@@ -89,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
                 orderItem.setQuantity(itemRequest.getQuantity());
                 orderItem.setPrice(product.getPrice());
 
-                totalAmount = totalAmount.add(BigDecimal.valueOf(product.getPrice())
+                totalAmount = totalAmount.add(BigDecimal.valueOf(itemRequest.getPrice())
                         .multiply(BigDecimal.valueOf(itemRequest.getQuantity())));
                 orderItems.add(orderItem);
             }
@@ -104,15 +130,39 @@ public class OrderServiceImpl implements OrderService {
             Order savedOrder = orderRepository.save(order);
 
             // Create topic and send to Kafka
-            OrderConfirmationRequest orderConfirmationRequest = new OrderConfirmationRequest().builder()
+            OrderConfirmationRequest orderConfirmationRequest = OrderConfirmationRequest.builder()
                     .orderId(savedOrder.getId())
                     .totalPrice(savedOrder.getTotalPrice())
                     .customerId(savedOrder.getCustomerId())
-                    .paymentMethod(PaymentMethod.PAYOS) // Default
+                    .paymentMethod(orderRequest.getPaymentMethod()) // Default
                     .orderitems(savedOrder.getOrderitems())
                     .build();
 
+            // Handle Payment
+
             orderProducer.sendOrderConfirmation(orderConfirmationRequest);
+
+            if (!orderRequest.getPaymentMethod().equals(PaymentMethod.HOME)) {
+                // Grpc
+                // BigDecimal totalPrice = new
+                // BigDecimal(orderConfirmationRequest.getTotalPrice());
+                com.ptho1504.microservices.payment_service.payment.PaymentMethod paymentMethod = com.ptho1504.microservices.payment_service.payment.PaymentMethod
+                        .valueOf(orderRequest.getPaymentMethod().name());
+                Payment payRequestGrpc = Payment.newBuilder()
+                        .setOrderId(savedOrder.getId())
+                        .setCustomerId(savedOrder.getCustomerId())
+                        .setTotalPrice(savedOrder.getTotalPrice().toString())
+                        .setPaymentMethod(paymentMethod)
+                        .build();
+                // Grpc
+                PaymentResponse paymentResponse = this.paymentClient.handlePayment(payRequestGrpc);
+                com.ptho1504.microservice.order_service.order.model.Payment payment = paymapper
+                        .toPayment(paymentResponse);
+                payment.setPayMethod(orderRequest.getPaymentMethod());
+                return OrderResponse.builder().customer(customerRespone).order(savedOrder).payment(payment)
+                        .build();
+            }
+            // Send to Kafka to use notify service
 
             return OrderResponse.builder().customer(customerRespone).order(savedOrder).build();
         } catch (Exception e) {

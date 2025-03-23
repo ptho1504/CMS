@@ -1,6 +1,6 @@
 grpc:
   server:
-    port: 9110
+    port: 9140
 spring:
   profiles:
     active: dev # Activate the 'dev' profile for discovery-service
@@ -16,6 +16,8 @@ spring:
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
+    producer:
+      bootstrap-servers: localhost:9092
 logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
@@ -27,3 +29,10 @@ management:
     web:
       exposure:
         include: health, info
+payos:
+  clientId: cccccccc
+  apiKey: aaaaaaaa
+  checkSumKey: bbbbbbbbbbb
+  webhookUrl: https://dbaf-104-28-237-71.ngrok-free.app/api/v1/payments/pay-os/handle-web-hook
+  returnUrl: https://dbaf-104-28-237-71.ngrok-free.app/api/v1/payments/success
+  cancelUrl: https://dbaf-104-28-237-71.ngrok-free.app/api/v1/payments/cancel

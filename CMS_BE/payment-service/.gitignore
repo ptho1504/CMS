@@ -3,7 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+payment-service/src/main/resources/application.yml
 ### STS ###
 .apt_generated
 .classpath
@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/src/main/resources/application.yml
+/src/main/resources/application-*.yml
+!/src/main/resources/application-example.yml
+CMS_BE/payment-service/src/main/resources/application.yml

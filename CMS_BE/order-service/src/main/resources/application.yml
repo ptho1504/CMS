@@ -15,6 +15,8 @@ spring:
   reactor:
     context-propagation: AUTO
   kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
     producer:
       bootstrap-servers: localhost:9092
 logging:
@@ -40,3 +42,6 @@ grpc-server:
   product:
     service:
       address: "localhost:9130"
+  payment:
+    service:
+      address: "localhost:9140"

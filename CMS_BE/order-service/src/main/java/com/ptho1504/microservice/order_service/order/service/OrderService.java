@@ -1,11 +1,14 @@
 package com.ptho1504.microservice.order_service.order.service;
 
+import java.util.Optional;
+
 import com.ptho1504.microservice.order_service.order.dto.request.ChangeStatusOrderRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.CreateOrderRequest;
 import com.ptho1504.microservice.order_service.order.dto.request.PaginationRequest;
 import com.ptho1504.microservice.order_service.order.dto.response.OrderResponse;
 import com.ptho1504.microservice.order_service.order.dto.response.PageResult;
 import com.ptho1504.microservice.order_service.order.kafka.OrderConfirmationRequest;
+import com.ptho1504.microservice.order_service.order.model.Order;
 
 public interface OrderService {
     OrderResponse createOrder(CreateOrderRequest orderRequest);
@@ -23,5 +26,9 @@ public interface OrderService {
     PageResult<OrderResponse> findAllOrdersByMe(PaginationRequest requestFindAll, Integer userId);
 
     Object test(OrderConfirmationRequest request);
+
+    Optional<Order> findByOrderIdAndCustomerId(Integer orderId, Integer cusId);
+
+    Order saveOrder(Order savedOrder);
 
 }

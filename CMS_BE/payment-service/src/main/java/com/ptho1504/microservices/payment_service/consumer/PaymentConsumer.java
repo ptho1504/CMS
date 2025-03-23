@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ptho1504.microservices.order_service.order.kafka.OrderConfirmationRequest;
 import com.ptho1504.microservices.payment_service.exception.OrderExisted;
 import com.ptho1504.microservices.payment_service.model.Payment;
+import com.ptho1504.microservices.payment_service.model.PaymentMethod;
 import com.ptho1504.microservices.payment_service.model.PaymentStatus;
 import com.ptho1504.microservices.payment_service.service.PaymentService;
 
@@ -27,36 +28,34 @@ public class PaymentConsumer {
     public void consumePaymentSuccessNotification(OrderConfirmationRequest orderConfirmationRequest)
             throws MessagingException {
         try {
-            logger.info(String.format("----------Consuming the message from order-topic Topic-------------"));
+            if (orderConfirmationRequest.getPaymentMethod().equals(PaymentMethod.HOME)) {
+                logger.info(String.format("----------Consuming the message from order-topic Topic-------------"));
 
-            // Check exist of orderId
-            if (this.paymentService.existsByOrderId(orderConfirmationRequest.getOrderId())) {
-                throw new OrderExisted(60002, "Order has been existed");
+                // Check exist of orderId
+                if (this.paymentService.existsByOrderId(orderConfirmationRequest.getOrderId())) {
+                    throw new OrderExisted(60002, "Order has been existed");
+                }
+
+                Payment payment = Payment.builder()
+                        .createdAt(new Date())
+                        .updatedAt(LocalDateTime.now())
+                        .customerId(orderConfirmationRequest.getCustomerId())
+                        .orderId(orderConfirmationRequest.getOrderId())
+                        .totalPrice(orderConfirmationRequest.getTotalPrice())
+                        .paymentMethod(PaymentMethod.HOME)
+                        .status(PaymentStatus.PENDING)
+                        .build();
+                // Save payment
+                Payment savedPayment = paymentService.savePayment(payment);
+
+                /*
+                 * Send message success to order by kafka
+                 * Send message success to notify by kafka
+                 */
             }
-
-            Payment savedPayment = new Payment().builder()
-                    .createdAt(new Date())
-                    .updatedAt(LocalDateTime.now())
-                    .customerId(orderConfirmationRequest.getCustomerId())
-                    .orderId(orderConfirmationRequest.getOrderId())
-                    .totalPrice(orderConfirmationRequest.getTotalPrice())
-                    .paymentMethod(orderConfirmationRequest.getPaymentMethod())
-                    .status(PaymentStatus.PENDING)
-                    .build();
-            // Save payment
-            paymentService.savePayment(savedPayment);
-
-            // Call api-3rd to processing data
-
-            /*
-             * Send message success to order by kafka
-             * Send messsage sucess to notify by kafka
-             */
         } catch (Exception e) {
-            logger.error("Some thing wrong", e.getMessage());
+            logger.error("Some thing wrong in consumePaymentSuccessNotification", e.getMessage());
             throw e;
         }
-
     }
-
 }
