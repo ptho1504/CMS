@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.springframework.stereotype.Service;
 
+import com.ptho1504.microservices.payment_service.dto.response.PaymentResponse;
 import com.ptho1504.microservices.payment_service.model.Payment;
 import com.ptho1504.microservices.payment_service.model.PaymentMethod;
 
@@ -19,7 +20,7 @@ public class PaymentExecutorImpl implements PaymentExecutor {
     }
 
     @Override
-    public Object processPayment(PaymentMethod paymentMethod, Payment payment) {
+    public PaymentResponse processPayment(PaymentMethod paymentMethod, Payment payment) {
         return paymentStrategyMap.get(paymentMethod)
                 .handlePayment(payment);
     }

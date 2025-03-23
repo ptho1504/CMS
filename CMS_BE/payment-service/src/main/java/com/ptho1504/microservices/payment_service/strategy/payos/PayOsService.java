@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.ptho1504.microservices.payment_service.dto.response.PaymentResponse;
 import com.ptho1504.microservices.payment_service.model.Payment;
 import com.ptho1504.microservices.payment_service.model.PaymentMethod;
 import com.ptho1504.microservices.payment_service.strategy.PaymentStrategy;
@@ -37,26 +38,35 @@ public class PayOsService implements PaymentStrategy {
     }
 
     @Override
-    public Object handlePayment(Payment payment) {
+    public PaymentResponse handlePayment(Payment payment) {
         try {
             ItemData itemData = ItemData.builder()
                     .name(payment.getCustomerId().toString())
-                    // .price(payment.getTotalPrice().intValue())
-                    .price(2000)
+                    .price(payment.getTotalPrice().intValue())
+                    // .price(2000)
                     .quantity(1)
                     .build();
             PaymentData paymentData = PaymentData.builder()
                     .orderCode(payment.getOrderId().longValue())
-                    .description("This payment have been handle by " + payment.getPaymentMethod())
-                    // .amount(payment.getTotalPrice().intValue())
-                    .amount(2000)
+                    // .description("This payment have been handle by " +
+                    // payment.getPaymentMethod())
+                    .description(payment.getId().toString())
+                    .amount(payment.getTotalPrice().intValue())
+                    // .amount(2000)
                     .item(itemData)
                     .returnUrl(returnUrl)
                     .cancelUrl(cancelUrl)
                     .build();
 
             CheckoutResponseData data = payOS.createPaymentLink(paymentData);
-            return data;
+
+            PaymentResponse response = PaymentResponse.builder()
+                    .checkoutUrl(data.getCheckoutUrl())
+                    .qrCode(data.getQrCode())
+                    .status(data.getStatus())
+                    .build();
+
+            return response;
         } catch (Exception e) {
             logger.error("Some thing wrong in handle Payment in PayOs");
             throw new RuntimeException("Payment processing failed", e);

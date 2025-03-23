@@ -1,4 +1,4 @@
-package com.ptho1504.microservice.order_service.order.producer;
+package com.ptho1504.microservices.payment_service.producer;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -8,27 +8,25 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
-import com.ptho1504.microservice.order_service.order.kafka.OrderConfirmationRequest;
+import com.ptho1504.microservices.notify_service.notify.kafka.PaymentEvent;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class OrderProducerImpl implements OrderProducer {
-    private final Logger logger = LoggerFactory.getLogger(OrderProducerImpl.class);
-    private final KafkaTemplate<String, OrderConfirmationRequest> kafkaTemplate;
+public class PaymentProducerImpl implements PaymentProducer {
+    private final Logger logger = LoggerFactory.getLogger(PaymentProducerImpl.class);
+    private final KafkaTemplate<String, PaymentEvent> kafkaTemplate;
 
-    // private final
     @Override
-    public void sendOrderConfirmation(OrderConfirmationRequest orderConfirmation) {
-
+    public void sendOrderConfirmation(PaymentEvent paymentEvent) {
         try {
-            CompletableFuture<SendResult<String, OrderConfirmationRequest>> future = kafkaTemplate.send("order-topic",
-                    orderConfirmation);
+            CompletableFuture<SendResult<String, PaymentEvent>> future = kafkaTemplate.send("payment-topic",
+                    paymentEvent);
             future.whenComplete((res, ex) -> {
                 if (ex == null) {
                     System.out.println(
-                            "Sent message=[" + orderConfirmation.toString() + "] with offset =["
+                            "Sent message=[" + paymentEvent.toString() + "] with offset =["
                                     + res.getRecordMetadata());
                     // logger.info(String.format("Request have been send ::%s",
                     // orderConfirmation.toString()));
@@ -40,6 +38,7 @@ public class OrderProducerImpl implements OrderProducer {
             logger.error("Some thing wrong", e.getMessage());
             throw e;
         }
+
     }
 
 }

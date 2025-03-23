@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ptho1504.microservices.payment_service.dto.response.ApiResponse;
 import com.ptho1504.microservices.payment_service.dto.response.ResponseUtil;
 import com.ptho1504.microservices.payment_service.exception.OrderExisted;
+import com.ptho1504.microservices.payment_service.exception.PaymentNotFound;
+import com.ptho1504.microservices.payment_service.exception.PaymentPermission;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -28,8 +30,31 @@ public class GlobalExceptionHandler {
                 request.getRequestURI());
     }
 
+    @ExceptionHandler(PaymentNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<Object> handle(PaymentNotFound e, HttpServletRequest request) {
+        logger.error("{}", e.getMessage());
+        return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
+                request.getRequestURI());
+    }
+
+    @ExceptionHandler(PaymentPermission.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<Object> handle(PaymentPermission e, HttpServletRequest request) {
+        logger.error("{}", e.getMessage());
+        return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(), e.getErrorCode(),
+                request.getRequestURI());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
+        logger.error("Exception: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An unexpected error occurred. Please try again.");
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleException(RuntimeException ex) {
         logger.error("Exception: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("An unexpected error occurred. Please try again.");

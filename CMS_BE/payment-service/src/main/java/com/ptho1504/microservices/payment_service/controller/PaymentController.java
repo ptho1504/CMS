@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.ptho1504.microservices.notify_service.notify.kafka.PaymentEvent;
+import com.ptho1504.microservices.order_service.order.kafka.OrderConfirmationRequest;
 import com.ptho1504.microservices.payment_service.dto.request.PaginationRequest;
 import com.ptho1504.microservices.payment_service.dto.response.ApiResponse;
 import com.ptho1504.microservices.payment_service.dto.response.PageResult;
@@ -18,17 +20,19 @@ import com.ptho1504.microservices.payment_service.service.PaymentService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/payments")
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @GetMapping("/test")
-    public String testing() {
-        return "Testing";
+    @PostMapping("/test")
+    public void testing(@RequestBody PaymentEvent request) {
+        this.paymentService.test(request);
     }
 
     @GetMapping("/")
@@ -49,7 +53,7 @@ public class PaymentController {
     public ResponseEntity<ApiResponse<Object>> handleWebHookPayOs(
             @RequestBody ObjectNode bNode,
             HttpServletRequest request) {
-
+        log.info("web hook {} ", bNode);
         Object response = this.paymentService.handlePayOsWebHook(bNode);
         return ResponseEntity
                 .ok(ResponseUtil.success(response, "handleWebHook order Successfully", request.getRequestURI()));

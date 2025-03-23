@@ -1,0 +1,34 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "com.ptho1504.microservices.payment_service.payment";
+
+package payment;
+
+enum PaymentMethod {
+    HOME = 0;
+    PAYPAL = 1;
+    PAYOS = 2;
+}
+enum PaymentStatus {
+    PENDING = 0;
+    COMPLETED = 1;
+    FAILED = 2;
+}
+
+service PaymentSerivce {
+    rpc handlePayment(Payment) returns (PaymentResponse);
+}
+
+message Payment {
+    int32 orderId = 1;
+    int32 customerId = 2;
+    string totalPrice = 3;
+    PaymentMethod paymentMethod = 4;
+    PaymentStatus status = 5;
+}
+
+message PaymentResponse {
+    string status = 1;
+    string checkoutUrl = 2;
+    string qrCode = 3;
+}

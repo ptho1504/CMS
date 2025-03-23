@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import vn.payos.PayOS;
 
@@ -25,11 +24,4 @@ public class PayOsConfig {
         return new PayOS(clientId, apiKey, checksumKey);
     }
 
-    @PostConstruct
-    public void testConfig() {
-        System.out.println("PayOS Config Loaded:");
-        System.out.println("Client ID: " + clientId);
-        System.out.println("API Key: " + apiKey);
-        System.out.println("Checksum Key: " + checksumKey);
-    }
 }
