@@ -28,13 +28,13 @@ public class UserClientImpl implements UserClient {
 
     public UserClientImpl(@Value("${grpc-server.user.service.address}") String userServiceAddress,
             UserGrpcMapper userGrpcMapper) {
-        // System.out.println("Initializing UserClientImpl with gRPC address: " +
-        // userServiceAddress);
+        System.out.println("Initializing UserClientImpl with gRPC address: " +
+                userServiceAddress);
         ManagedChannel channel = ManagedChannelBuilder.forTarget(userServiceAddress)
                 .usePlaintext() // In production, you'd use SSL/TLS
                 .build();
-        // System.out.println("Initializing UserClientImpl with gRPC address: " +
-        // channel);
+        System.out.println("Initializing UserClientImpl with gRPC address: " +
+                channel);
         this.userServiceBlockingStub = UserServiceGrpc.newBlockingStub(channel);
 
         this.userGrpcMapper = userGrpcMapper;
