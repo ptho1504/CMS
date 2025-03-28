@@ -1,8 +1,14 @@
+grpc:
+  server:
+    port: 9000
+  security:
+    auth:
+      enabled: false
 spring:
   profiles:
     active: dev # Activate the 'dev' profile for discovery-service
   config:
-    import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
+    import: optional:configserver:http://config-server:8888 # Import configuration from Config Server
   application:
     name: auth-service
   output:
@@ -20,14 +26,7 @@ application:
 grpc-server:
   user:
     service:
-      address: "localhost:9090"
+      address: "user-server:9090"
   customer:
     service:
-      address: "localhost:9110"
-
-grpc:
-  server:
-    port: 9000
-  security:
-    auth:
-      enalbed: false
+      address: "customer-server:9110"
