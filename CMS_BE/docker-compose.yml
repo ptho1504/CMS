@@ -1,6 +1,6 @@
 services:
-  mysql:
-    container_name: mysql_container
+  mysql-server:
+    container_name: mysql-server
     image: mysql:8.0.30
     ports:
       - ${DATABASE_PORT}:3306
@@ -9,75 +9,147 @@ services:
       - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - cms_db:/var/lib/mysql
-  zipkin-server:
-    image: openzipkin/zipkin:2.23
-    mem_limit: 300m
-    ports:
-      - "9411:9411"
     networks:
       - microservices-network
-    restart: always #Restart if there is a problem starting up
-  
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    container_name: zookeeper
-    environment:
-      ZOOKEEPER_SERVER_ID: 1
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "2181:2181"
-    networks:
-      - microservices-network
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    container_name: ms_kafka
-    ports:
-      - "9092:9092"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-    networks:
-      - microservices-network
-  
-  # config-server:
-  #   build: ./config-server
-  #   container_name: config-server
+  # zipkin-server:
+  #   image: openzipkin/zipkin:2.23
+  #   mem_limit: 300m
   #   ports:
-  #     - "8888:8888"
+  #     - "9411:9411"
   #   networks:
   #     - microservices-network
+  #   restart: always #Restart if there is a problem starting up
+  
+  # zookeeper:
+  #   image: confluentinc/cp-zookeeper:latest
+  #   container_name: zookeeper
   #   environment:
-  #     SPRING_PROFILES_ACTIVE: dev
-  #     SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/ptho1504/git-config-repo
-  #     SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: discovery-service  # Multiple services
-    
-    
-  # discovery-server:
-  #   build: ./discovery-server
-  #   container_name: discovery-server
+  #     ZOOKEEPER_SERVER_ID: 1
+  #     ZOOKEEPER_CLIENT_PORT: 2181
+  #     ZOOKEEPER_TICK_TIME: 2000
   #   ports:
-  #     - "8761:8761"
+  #     - "2181:2181"
   #   networks:
   #     - microservices-network
-  #   environment:
-  #     SPRING_PROFILES_ACTIVE: dev
-  #     SPRING_CLOUD_CONFIG_URI: "http://config-server:8888"
-  #     SERVER_PORT: 8761
-  #     # SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT-LABEL: "main"
-  #     # SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
-  #     # EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
-  #     EUREKA_CLIENT_REGISTERWITHEUREKA: "false"  
-  #     EUREKA_CLIENT_FETCHREGISTRY: "false"
+  # kafka:
+  #   image: confluentinc/cp-kafka:latest
+  #   container_name: ms_kafka
+  #   ports:
+  #     - "9092:9092"
   #   depends_on:
-  #     - config-server
+  #     - zookeeper
+  #   environment:
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #     KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+  #     KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+  #   networks:
+  #     - microservices-network
   
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - microservices-network
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: https://github.com/ptho1504/git-config-repo
+      SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCHPATHS: discovery-service, gateway-service, user-service, auth-service, customer-service, notify-service, order-service, payment-service, product-service  # Multiple services
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  discovery-server:
+    build: ./discovery-server
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SERVER_PORT: 8761
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      EUREKA_CLIENT_REGISTERWITHEUREKA: "false"  
+      EUREKA_CLIENT_FETCHREGISTRY: "false"
+    depends_on:
+      config-server:
+        condition: service_healthy
+  gateway-server:
+    build: 
+      ./gateway-service
+    container_name: gateway-server
+    ports:
+      - "8222:8222"
+      - "9200:9200"
+    networks:
+      - microservices-network
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SERVER_PORT: 8222
+      GRP_SERVER_PORT: 9200
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      # EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+      EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
+      EUREKA_CLIENT_FETCHREGISTRY: "true"
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
+  user-server:
+    build: 
+      ./user-service
+    container_name: user-server
+    ports:
+      - "8200:8200"
+      - "9090:9090"
+    networks:
+      - microservices-network
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SERVER_PORT: 8200
+      GRP_SERVER_PORT: 9090
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      # EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+      EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
+      EUREKA_CLIENT_FETCHREGISTRY: "true"
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
+      mysql-server:
+        condition: service_started
+  auth-server:
+    build: 
+      ./auth-service
+    container_name: auth-server
+    ports:
+      - "8100:8100"
+      - "9000:9000"
+    networks:
+      - microservices-network
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SERVER_PORT: 8100
+      GRP_SERVER_PORT: 9000
+      SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+      # EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+      EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
+      EUREKA_CLIENT_FETCHREGISTRY: "true"
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
+      user-server:
+        condition: service_started
 volumes:
   cms_db:
 networks:
