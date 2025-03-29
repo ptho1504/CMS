@@ -5,8 +5,8 @@ spring:
   profiles:
     active: dev # Activate the 'dev' profile for discovery-service
   config:
-    # import: optional:configserver:http://config-server:8888  # Import configuration from Config Server
-    import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
+    import: optional:configserver:http://config-server:8888 # Import configuration from Config Server
+    # import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
   application:
     name: customer-service
   output:

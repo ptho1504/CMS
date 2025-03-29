@@ -20,33 +20,33 @@ services:
   #     - microservices-network
   #   restart: always #Restart if there is a problem starting up
   
-  # zookeeper:
-  #   image: confluentinc/cp-zookeeper:latest
-  #   container_name: zookeeper
-  #   environment:
-  #     ZOOKEEPER_SERVER_ID: 1
-  #     ZOOKEEPER_CLIENT_PORT: 2181
-  #     ZOOKEEPER_TICK_TIME: 2000
-  #   ports:
-  #     - "2181:2181"
-  #   networks:
-  #     - microservices-network
-  # kafka:
-  #   image: confluentinc/cp-kafka:latest
-  #   container_name: ms_kafka
-  #   ports:
-  #     - "9092:9092"
-  #   depends_on:
-  #     - zookeeper
-  #   environment:
-  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  #     KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-  #     KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-  #   networks:
-  #     - microservices-network
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - microservices-network
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: ms_kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://ms_kafka:9092
+    networks:
+      - microservices-network
   
   config-server:
     build: ./config-server
@@ -94,7 +94,7 @@ services:
       SERVER_PORT: 8222
       GRP_SERVER_PORT: 9200
       SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
-      # EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
       EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
       EUREKA_CLIENT_FETCHREGISTRY: "true"
     depends_on:
@@ -116,7 +116,7 @@ services:
       SERVER_PORT: 8200
       GRP_SERVER_PORT: 9090
       SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
-      # EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
       EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
       EUREKA_CLIENT_FETCHREGISTRY: "true"
     depends_on:
@@ -140,7 +140,7 @@ services:
       SERVER_PORT: 8100
       GRP_SERVER_PORT: 9000
       SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
-      # EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
       EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
       EUREKA_CLIENT_FETCHREGISTRY: "true"
     depends_on:
@@ -150,6 +150,96 @@ services:
         condition: service_started
       user-server:
         condition: service_started
+  customer-server:
+      build: 
+        ./customer-service
+      container_name: customer-server
+      ports:
+        - "8300:8300"
+        - "9110:9110"
+      networks:
+        - microservices-network
+      environment:
+        SPRING_PROFILES_ACTIVE: dev
+        SERVER_PORT: 8300
+        GRP_SERVER_PORT: 9110
+        SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+        EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+        EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
+        EUREKA_CLIENT_FETCHREGISTRY: "true"
+      depends_on:
+        config-server:
+          condition: service_healthy
+        discovery-server:
+          condition: service_started
+  product-server:
+      build: 
+        ./product-service
+      container_name: product-server
+      ports:
+        - "8400:8400"
+        - "9130:9130"
+      networks:
+        - microservices-network
+      environment:
+        SPRING_PROFILES_ACTIVE: dev
+        SERVER_PORT: 8400
+        GRP_SERVER_PORT: 9130
+        SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+        EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+        EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
+        EUREKA_CLIENT_FETCHREGISTRY: "true"
+      depends_on:
+        config-server:
+          condition: service_healthy
+        discovery-server:
+          condition: service_started      
+  order-server:
+      build: 
+        ./order-service
+      container_name: order-server
+      ports:
+        - "8500:8500"
+        - "9120:9120"
+      networks:
+        - microservices-network
+      environment:
+        SPRING_PROFILES_ACTIVE: dev
+        SERVER_PORT: 8500
+        GRP_SERVER_PORT: 9120
+        SPRING_KAFKA_BOOTSTRAP-SERVERS: ms_kafka:9092
+        SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+        EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+        EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
+        EUREKA_CLIENT_FETCHREGISTRY: "true"
+      depends_on:
+        config-server:
+          condition: service_healthy
+        discovery-server:
+          condition: service_started
+  payment-server:
+      build: 
+        ./payment-service
+      container_name: payment-server
+      ports:
+        - "8600:8600"
+        - "9140:9140"
+      networks:
+        - microservices-network
+      environment:
+        SPRING_PROFILES_ACTIVE: dev
+        SERVER_PORT: 8600
+        GRP_SERVER_PORT: 9140
+        SPRING_KAFKA_BOOTSTRAP-SERVERS: ms_kafka:9092
+        SPRING_CONFIG_IMPORT: optional:configserver:http://config-server:8888
+        EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: "http://discovery-server:8761/eureka/"
+        EUREKA_CLIENT_REGISTERWITHEUREKA: "true"  
+        EUREKA_CLIENT_FETCHREGISTRY: "true"
+      depends_on:
+        config-server:
+          condition: service_healthy
+        discovery-server:
+          condition: service_started
 volumes:
   cms_db:
 networks:

@@ -5,8 +5,8 @@ spring:
   profiles:
     active: dev # Activate the 'dev' profile for discovery-service
   config:
-    # import: optional:configserver:http://config-server:8888  # Import configuration from Config Server
-    import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
+    import: optional:configserver:http://config-server:8888 # Import configuration from Config Server
+    # import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
   application:
     name: order-service
   output:
@@ -15,10 +15,11 @@ spring:
   reactor:
     context-propagation: AUTO
   kafka:
+    bootstrap-servers: ms_kafka:9092
     consumer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: ms_kafka:9092
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: ms_kafka:9092
 logging:
   level:
     org.apache.kafka.clients.producer.ProducerConfig: WARN
@@ -35,13 +36,13 @@ management:
 grpc-server:
   user:
     service:
-      address: "localhost:9090"
+      address: "user-server:9090"
   customer:
     service:
-      address: "localhost:9110"
+      address: "customer-server:9110"
   product:
     service:
-      address: "localhost:9130"
+      address: "product-server:9130"
   payment:
     service:
-      address: "localhost:9140"
+      address: "payment-server:9140"
