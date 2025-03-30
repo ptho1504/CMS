@@ -3,10 +3,10 @@ services:
     container_name: mysql-server
     image: mysql:8.0.30
     ports:
-      - ${DATABASE_PORT}:3306
+      - ${DATABASE_PORT:-3306}:3306
     environment:
       - MYSQL_DATABASE=cms_db
-      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD:-password}
     volumes:
       - cms_db:/var/lib/mysql
     networks:
@@ -49,7 +49,8 @@ services:
       - microservices-network
   
   config-server:
-    build: ./config-server
+    # build: ./config-server
+    image: ptho1504/config-server
     container_name: config-server
     ports:
       - "8888:8888"
@@ -65,7 +66,7 @@ services:
       timeout: 5s
       retries: 5
   discovery-server:
-    build: ./discovery-server
+    image: ptho1504/discovery-server
     container_name: discovery-server
     ports:
       - "8761:8761"
@@ -81,8 +82,7 @@ services:
       config-server:
         condition: service_healthy
   gateway-server:
-    build: 
-      ./gateway-service
+    image: ptho1504/gateway-service
     container_name: gateway-server
     ports:
       - "8222:8222"
@@ -103,8 +103,7 @@ services:
       discovery-server:
         condition: service_started
   user-server:
-    build: 
-      ./user-service
+    image: ptho1504/user-service
     container_name: user-server
     ports:
       - "8200:8200"
@@ -127,8 +126,7 @@ services:
       mysql-server:
         condition: service_started
   auth-server:
-    build: 
-      ./auth-service
+    image: ptho1504/auth-service
     container_name: auth-server
     ports:
       - "8100:8100"
@@ -151,8 +149,7 @@ services:
       user-server:
         condition: service_started
   customer-server:
-      build: 
-        ./customer-service
+      image: ptho1504/customer-service
       container_name: customer-server
       ports:
         - "8300:8300"
@@ -173,8 +170,7 @@ services:
         discovery-server:
           condition: service_started
   product-server:
-      build: 
-        ./product-service
+      image: ptho1504/product-service
       container_name: product-server
       ports:
         - "8400:8400"
@@ -195,8 +191,7 @@ services:
         discovery-server:
           condition: service_started      
   order-server:
-      build: 
-        ./order-service
+      image: ptho1504/order-service
       container_name: order-server
       ports:
         - "8500:8500"
@@ -218,8 +213,7 @@ services:
         discovery-server:
           condition: service_started
   payment-server:
-      build: 
-        ./payment-service
+      image: ptho1504/payment-service
       container_name: payment-server
       ports:
         - "8600:8600"
