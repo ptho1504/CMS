@@ -14,7 +14,7 @@ spring:
         git:
           uri: https://github.com/ptho1504/git-config-repo
           default-label: local
-          searchPaths: discovery-service, customer-service, gateway-service, user-service, auth-service, product-service, order-service, notify-service, payment-service # TODO add some service in heare bro
+          searchPaths: discovery-service, customer-service, gateway-service, user-service, auth-service, product-service, order-service, notify-service, payment-service, upload-service # TODO add some service in heare bro
           # cloneOnStart: true
   output:
     ansi:
