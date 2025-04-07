@@ -3,6 +3,7 @@ package com.microservices.upload_service.executor.concrete.s3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.microservices.upload_service.executor.product.ImageUploader;
 
@@ -14,7 +15,7 @@ public class S3ImageUploader implements ImageUploader {
     private final Logger logger = LoggerFactory.getLogger(S3ImageUploader.class);
 
     @Override
-    public String uploadImage(String imagePath) {
+    public String uploadImage(MultipartFile imagePath) {
         logger.info("This is S3 Uploader Image");
         return "Uploaded image " + imagePath + " to S3 bucket";
     }

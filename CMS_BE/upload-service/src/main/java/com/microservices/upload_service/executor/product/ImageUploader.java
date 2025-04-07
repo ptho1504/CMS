@@ -1,5 +1,7 @@
 package com.microservices.upload_service.executor.product;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface ImageUploader {
-    public String uploadImage(String imagePath);
+    public String uploadImage(MultipartFile file);
 }

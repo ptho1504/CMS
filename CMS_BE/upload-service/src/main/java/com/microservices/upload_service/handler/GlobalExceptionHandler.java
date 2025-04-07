@@ -1,5 +1,6 @@
 package com.microservices.upload_service.handler;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -9,8 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.microservices.upload_service.dto.response.ApiResponse;
+import com.microservices.upload_service.dto.response.ResponseUtil;
+import com.microservices.upload_service.exception.InvalidFileTypeException;
+import com.microservices.upload_service.exception.NotFoundFileException;
+
+import jakarta.servlet.http.HttpServletRequest;
 import net.devh.boot.grpc.server.advice.GrpcAdvice;
 
 @RestControllerAdvice
@@ -18,16 +26,23 @@ import net.devh.boot.grpc.server.advice.GrpcAdvice;
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // @ExceptionHandler(UserNotFoundException.class)
-    // @ResponseStatus(HttpStatus.NOT_FOUND)
-    // public ApiResponse<Object> handle(UserNotFoundException e, HttpServletRequest
-    // request) {
-    // logger.error("{}", e.getMessage());
-    // return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(),
-    // e.getErrorCode(),
-    // request.getRequestURI());
-    // }
+    @ExceptionHandler(NotFoundFileException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<Object> handle(NotFoundFileException e, HttpServletRequest request) {
+        logger.error("{}", e.getMessage());
+        return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(),
+                e.getErrorCode(),
+                request.getRequestURI());
+    }
 
+    @ExceptionHandler(InvalidFileTypeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiResponse<Object> handle(InvalidFileTypeException e, HttpServletRequest request) {
+        logger.error("{}", e.getMessage());
+        return ResponseUtil.error(Arrays.asList(e.getMessage()), e.getMessage(),
+                e.getErrorCode(),
+                request.getRequestURI());
+    }
     // @ExceptionHandler(UserExistingException.class)
     // @ResponseStatus(HttpStatus.CONFLICT)
     // public ApiResponse<Object> handle(UserExistingException e, HttpServletRequest

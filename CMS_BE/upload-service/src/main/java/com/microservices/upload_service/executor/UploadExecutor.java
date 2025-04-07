@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.microservices.upload_service.config.ConfigService;
 import com.microservices.upload_service.executor.factory.UploadFactory;
@@ -32,18 +33,18 @@ public class UploadExecutor {
         this.configService = configService;
     }
 
-    public String uploadFile() {
+    public String uploadFile(MultipartFile file) {
         logger.info("Upload File Content");
         UploadFactory factory = getUploadFactory();
         FileUploader fileUploader = factory.createFileUploader();
-        return fileUploader.uploadFile("test-file-uploader");
+        return fileUploader.uploadFile(file);
     }
 
-    public String uploadImage() {
+    public String uploadImage(MultipartFile file) {
         logger.info("Upload Image Content");
         UploadFactory factory = getUploadFactory();
         ImageUploader imageUploader = factory.createImageUploader();
-        return imageUploader.uploadImage("test-image-uploader");
+        return imageUploader.uploadImage(file);
     }
 
     private UploadFactory getUploadFactory() {
