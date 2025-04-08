@@ -1,0 +1,45 @@
+cloud:
+  aws:
+    region:
+      static: ap-southeast-1
+    credentials:
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
+    s3:
+      bucket: your-bucket-name
+grpc:
+  server:
+    port: 9160
+spring:
+  web:
+    resources:
+      static-locations: file:./upload-service/uploads/
+  profiles:
+    active: dev # Activate the 'dev' profile for discovery-service
+  config:
+    # import: optional:configserver:http://config-server:8888  # Import configuration from Config Server
+    import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
+  application:
+    name: upload-service
+  output:
+    ansi:
+      enabled: always
+  reactor:
+    context-propagation: AUTO
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+grpc-server:
+  auth:
+    service:
+      address: "localhost:9000"
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+server:
+  return_url: http://localhost:8800/

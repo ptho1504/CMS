@@ -2,6 +2,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "UploadServiceApplication",
+      "request": "launch",
+      "mainClass": "com.microservices.upload_service.UploadServiceApplication",
+      "projectName": "upload-service"
+    },
+    {
+      "type": "java",
       "name": "ProductApplication",
       "request": "launch",
       "mainClass": "com.ptho1504.microservice.product.ProductApplication",
