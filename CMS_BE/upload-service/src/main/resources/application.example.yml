@@ -29,6 +29,10 @@ spring:
 logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+grpc-server:
+  auth:
+    service:
+      address: "localhost:9000"
 management:
   tracing:
     sampling:

@@ -1,8 +1,8 @@
 spring:
   profiles:
     active: dev # Activate the 'dev' profile for discovery-service
-  # config:
-  #   import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
+  config:
+    import: optional:configserver:http://localhost:8888 # Import configuration from Config Server
   application:
     name: auth-service
   output:
