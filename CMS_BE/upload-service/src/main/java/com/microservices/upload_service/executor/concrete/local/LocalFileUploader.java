@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,8 @@ public class LocalFileUploader implements FileUploader {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
             "application/zip",
             "text/plain");
+    @Value("${server.return_url}")
+    private String returnUrl;
 
     @Override
     public String uploadFile(MultipartFile file) {
@@ -59,7 +62,7 @@ public class LocalFileUploader implements FileUploader {
             String fileName = UUID.randomUUID() + "_" + originalFileName;
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            return "/upload/file/" + fileName;
+            return returnUrl + "upload/file/" + fileName;
 
         } catch (IOException e) {
             logger.error("IO error during file upload", e);

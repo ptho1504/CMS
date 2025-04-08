@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,8 @@ public class LocalImageUploader implements ImageUploader {
     private static final String STORAGE_DIRECTORY = "/uploads/images";
     private static final List<String> ALLOWED_TYPES = List.of("image/jpeg", "image/png", "image/jpg", "image/webp");
     private static final long MAX_SIZE = 5 * 1024 * 1024;
+    @Value("${server.return_url}")
+    private String returnUrl;
 
     @Override
     public String uploadImage(MultipartFile file) {
@@ -60,7 +63,7 @@ public class LocalImageUploader implements ImageUploader {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            return "/upload/images/" + fileName;
+            return returnUrl + "upload/images/" + fileName;
 
         } catch (IOException e) {
             logger.error("IO error during file upload", e);

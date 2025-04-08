@@ -73,7 +73,11 @@
 			<artifactId>grpc-protobuf</artifactId>
 			<version>${grpc.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.30.36</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>annotations-api</artifactId>
